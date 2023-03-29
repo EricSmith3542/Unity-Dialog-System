@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.ShortcutManagement;
@@ -57,7 +58,20 @@ public class DialogTreeGraphView : GraphView
     {
         // Add selection dragger to the view
         var selectionDragger = new NodeSelectionDragger(this);
-        this.AddManipulator(selectionDragger);
+        this.AddManipulator(selectionDragger);        
+    }
+
+    public List<Port> GetCompatiblePorts(Port startPort)
+    {
+        List<Port> compatiblePorts = new List<Port>();
+        foreach (Port port in ports)
+        {
+            if(port != startPort && port.node != startPort.node && port.direction != startPort.direction && port.portType == startPort.portType)
+            {
+                compatiblePorts.Add(port);
+            }
+        }
+        return compatiblePorts;
     }
 
     public class DialogNode : Node
@@ -67,17 +81,18 @@ public class DialogTreeGraphView : GraphView
 
         int numOutputs = 0;
 
-        private TextField m_TitleField;
+        private DialogTreeGraphView graphView;
 
         public DialogNode(string title, DialogTreeGraphView gv)
         {
+            graphView = gv;
             SetPosition(new Rect(0, 0, 0, 0));
             BuildRequirementsPort();
             BuildPortAddSubtractButtons();
             AddOutputPort();
             BuildTextArea();
             SetNodeCapabilites();
-            this.AddManipulator(new NodeDragger(gv));
+            this.AddManipulator(new NodeDragger(graphView));
             this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
 
             //Replace the borring titleLabel with an EditableLabel
@@ -88,6 +103,13 @@ public class DialogTreeGraphView : GraphView
         }
 
         public DialogNode(DialogTreeGraphView gv) : this("Start", gv) { }
+
+        //public override Port InstantiatePort(Orientation orientation, Direction direction, Port.Capacity capacity, Type type)
+        //{
+        //    DialogPort newPort = new DialogPort(orientation, direction, capacity, type);
+        //    newPort.AddManipulator(new EdgeDragHelper(graphView));
+        //    return newPort;
+        //}
 
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -104,7 +126,9 @@ public class DialogTreeGraphView : GraphView
         private void BuildRequirementsPort()
         {
             Port input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
+            input.AddManipulator(new EdgeDragHelper(graphView));
             input.portName = "Requirements";
+            input.portColor = Color.green;
             inputContainer.Add(input);
         }
 
@@ -123,8 +147,10 @@ public class DialogTreeGraphView : GraphView
 
         private void AddOutputPort()
         {
-            Port output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+            Port output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+            output.AddManipulator(new EdgeDragHelper(graphView));
             output.portName = "Option " + numOutputs++;
+            output.portColor = Color.red;
             outputContainer.Add(output);
         }
         private void RemoveOutputPort()

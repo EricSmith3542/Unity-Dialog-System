@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class NodeDragger : MouseManipulator
 {
-    private bool m_Active;
+    private bool m_Active = false;
     private Vector2 m_Start;
     private List<float> start_lefts, start_tops;
     private DialogTreeGraphView graphView;
