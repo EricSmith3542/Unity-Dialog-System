@@ -101,16 +101,7 @@ public class DialogTreeGraphView : GraphView
             titleContainer.Insert(0, editableLabel);
 
         }
-
         public DialogNode(DialogTreeGraphView gv) : this("Start", gv) { }
-
-        //public override Port InstantiatePort(Orientation orientation, Direction direction, Port.Capacity capacity, Type type)
-        //{
-        //    DialogPort newPort = new DialogPort(orientation, direction, capacity, type);
-        //    newPort.AddManipulator(new EdgeDragHelper(graphView));
-        //    return newPort;
-        //}
-
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {

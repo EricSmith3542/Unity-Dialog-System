@@ -19,14 +19,14 @@ public class EdgeDragHelper : MouseManipulator
     protected override void RegisterCallbacksOnTarget()
     {
         target.RegisterCallback<MouseDownEvent>(OnMouseDown);
-        target.RegisterCallback<MouseMoveEvent>(OnMouseMove);
+        //target.RegisterCallback<MouseMoveEvent>(OnMouseMove);
         target.RegisterCallback<MouseUpEvent>(OnMouseUp);
     }
 
     protected override void UnregisterCallbacksFromTarget()
     {
         target.UnregisterCallback<MouseDownEvent>(OnMouseDown);
-        target.UnregisterCallback<MouseMoveEvent>(OnMouseMove);
+        //target.UnregisterCallback<MouseMoveEvent>(OnMouseMove);
         target.UnregisterCallback<MouseUpEvent>(OnMouseUp);
     }
 
@@ -62,17 +62,9 @@ public class EdgeDragHelper : MouseManipulator
         }
     }
 
-    private void OnMouseMove(MouseMoveEvent evt)
-    {
-        //if (m_DraggedPort != null && m_Edge != null)
-        //{
-        //    // Update the edge's input position
-        //    Vector2 mousePos = evt.mousePosition;
-        //    m_Edge.SetPosition(new Rect(m_DraggedPort.GetGlobalCenter(), mousePos));
-        //    m_Edge.MarkDirtyRepaint();
-        //    evt.StopPropagation();
-        //}
-    }
+    //private void OnMouseMove(MouseMoveEvent evt)
+    //{
+    //}
 
     private void OnMouseUp(MouseUpEvent evt)
     {
