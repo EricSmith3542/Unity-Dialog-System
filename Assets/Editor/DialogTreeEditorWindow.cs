@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class DialogTreeEditorWindow : EditorWindow
 {
     private static DialogTreeGraphView graphView;
+    private static Vector2 mousePos;
 
     [MenuItem("Window/Dialog Tree Editor")]
     public static void OpenWindow()
@@ -33,22 +34,37 @@ public class DialogTreeEditorWindow : EditorWindow
         //Add node to graph view
         graphView.AddElement(node);
 
-        var nodeAddButton = new Button(AddNode);
+        var nodeAddButton = new Button(() => AddNode());
         nodeAddButton.text = "Create New Node";
         nodeAddButton.tooltip = "Add Node";
         rootVisualElement.Add(nodeAddButton);
     }
 
-    [Shortcut("DialogTreeEditor/Shift-N", KeyCode.N, ShortcutModifiers.Shift)]
-    private static void AddNode()
+
+    private static void AddNode(bool isShortcut = false)
     {
-        Node another = new DialogTreeGraphView.DialogNode("Node " + graphView.graphElements.ToList().Count, graphView);
+        Node another;
+        if (isShortcut)
+        {
+            another = new DialogTreeGraphView.DialogNode("Node " + graphView.graphElements.ToList().Count, graphView, new Rect(mousePos, Vector2.zero));
+        }
+        else
+        {
+            another = new DialogTreeGraphView.DialogNode("Node " + graphView.graphElements.ToList().Count, graphView);
+        }
+
         graphView.AddElement(another);
+    }
+
+    [Shortcut("DialogTreeEditor/Shift-N", KeyCode.N, ShortcutModifiers.Shift)]
+    private static void AddNodeShortCut()
+    {
+        AddNode(true);
     }
 
     private void OnGUI()
     {
-        
+        mousePos = Event.current.mousePosition;
     }
 }
 
@@ -83,10 +99,10 @@ public class DialogTreeGraphView : GraphView
 
         private DialogTreeGraphView graphView;
 
-        public DialogNode(string title, DialogTreeGraphView gv)
+        public DialogNode(string title, DialogTreeGraphView gv, Rect pos)
         {
             graphView = gv;
-            SetPosition(new Rect(0, 0, 0, 0));
+            SetPosition(pos);
             BuildRequirementsPort();
             BuildPortAddSubtractButtons();
             AddOutputPort();
@@ -101,7 +117,11 @@ public class DialogTreeGraphView : GraphView
             titleContainer.Insert(0, editableLabel);
 
         }
+        public DialogNode(string title, DialogTreeGraphView gv) : this(title, gv, new Rect(0, 0, 0, 0)) { }
         public DialogNode(DialogTreeGraphView gv) : this("Start", gv) { }
+        
+
+
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
         {
