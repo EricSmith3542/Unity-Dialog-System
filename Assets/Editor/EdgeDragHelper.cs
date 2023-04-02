@@ -19,14 +19,12 @@ public class EdgeDragHelper : MouseManipulator
     protected override void RegisterCallbacksOnTarget()
     {
         target.RegisterCallback<MouseDownEvent>(OnMouseDown);
-        //target.RegisterCallback<MouseMoveEvent>(OnMouseMove);
         target.RegisterCallback<MouseUpEvent>(OnMouseUp);
     }
 
     protected override void UnregisterCallbacksFromTarget()
     {
         target.UnregisterCallback<MouseDownEvent>(OnMouseDown);
-        //target.UnregisterCallback<MouseMoveEvent>(OnMouseMove);
         target.UnregisterCallback<MouseUpEvent>(OnMouseUp);
     }
 
@@ -61,10 +59,6 @@ public class EdgeDragHelper : MouseManipulator
             }
         }
     }
-
-    //private void OnMouseMove(MouseMoveEvent evt)
-    //{
-    //}
 
     private void OnMouseUp(MouseUpEvent evt)
     {

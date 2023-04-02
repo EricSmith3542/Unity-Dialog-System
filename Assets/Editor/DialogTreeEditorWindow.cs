@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.ShortcutManagement;
@@ -12,6 +13,8 @@ public class DialogTreeEditorWindow : EditorWindow
     private static Vector2 mousePos;
     private static int dialogNodesCreated = 0;
     private static int booleanNodesCreated = 0;
+    private static bool openingExisting = false;
+    private bool initDone = false;
 
     [MenuItem("Assets/Create/Dialog Tree")]
     public static void OpenWindow()
@@ -22,25 +25,77 @@ public class DialogTreeEditorWindow : EditorWindow
         window.Show();
     }
 
+    public static void OpenWindow(DialogTree dialogTree)
+    {
+        asset = dialogTree;
+        OpenWindow();
+    }
+
+    [MenuItem("Assets/Open DialogTree Editor")]
+    private static void OpenDialogTreeEditor()
+    {
+        UnityEngine.Object[] selectedDialogTrees = Selection.GetFiltered(typeof(DialogTree), SelectionMode.Assets);
+        if (selectedDialogTrees.Length > 0 && selectedDialogTrees[0] is DialogTree)
+        {
+            openingExisting = true;
+            OpenWindow((DialogTree)selectedDialogTrees[0]);
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Alert", "In order to open the Dialog Tree Editor, please select a Dialog Tree ScriptableObject or go to Create > Dialog Tree", "OK");
+        }
+    }
+    private void OnPlayModeStateChanged(PlayModeStateChange state)
+    {
+        if (state == PlayModeStateChange.ExitingEditMode)
+        {
+            Close();
+        }
+    }
+
     private void OnEnable()
     {
-        //Initialize the graph view
-        graphView = new DialogTreeGraphView();
-        graphView.style.width = new StyleLength(new Length(100f, LengthUnit.Percent));
-        graphView.style.height = new StyleLength(new Length(100f, LengthUnit.Percent));
-        //Add graph view to window
-        rootVisualElement.Add(graphView);
+        //Initialize the DialogTree creating a new asset
+        if (!initDone)
+        {
+            //Initialize the graph view
+            graphView = new DialogTreeGraphView();
+            graphView.style.width = new StyleLength(new Length(100f, LengthUnit.Percent));
+            graphView.style.height = new StyleLength(new Length(100f, LengthUnit.Percent));
+            //Add graph view to window
+            rootVisualElement.Add(graphView);
 
-        //Create Starting Node
-        DialogNode node = new DialogNode(graphView, GetNextDialogNodeId());
+            if (!openingExisting)
+            {
+                //Create Starting Node
+                DialogNode node = new DialogNode(graphView, GetNextDialogNodeId());
 
-        //Add node to graph view
-        graphView.AddElement(node);
+                //Add node to graph view
+                graphView.AddElement(node);
 
-        //Initialize the DialogTree
-        asset = ScriptableObject.CreateInstance<DialogTree>();
-        asset.treeName = "New Dialog Tree";
-        asset.startNode = node;
+
+                asset = CreateInstance<DialogTree>();
+                asset.treeName = "New Dialog Tree";
+                asset.startNode = node;
+            }
+            else
+            {
+                //
+                graphView.AddElement(asset.startNode);
+                foreach (DialogTreeNode node in asset.nodes)
+                {
+                    graphView.AddElement(node);
+                }
+                foreach(Edge edge in asset.edges)
+                {
+                    graphView.AddElement(edge);
+                }
+                openingExisting = false;
+            }
+            initDone = true;
+        }
+        
+        
 
 
         Button dialogNodeAddButton = new Button(() => AddDialogNode());
@@ -120,6 +175,24 @@ public class DialogTreeEditorWindow : EditorWindow
     
     public static void CreateOrSaveAsset()
     {
+        //Set the list of nodes and edges on the asset
+        List<DialogTreeNode> nodes = new List<DialogTreeNode>();
+        List<Edge> edges = new List<Edge>();
+        foreach (var element in graphView.graphElements)
+        {
+            if (element is DialogTreeNode && !(element == asset.startNode))
+            {
+                nodes.Add((DialogTreeNode)element);
+            }
+            else if (element is Edge)
+            {
+                edges.Add((Edge)element);
+            }
+        }
+        asset.nodes = nodes;
+        asset.edges = edges;
+        Debug.Log("NODES THAT ARENT START: " + nodes.Count);
+
         // Check if asset already exists
         string assetPath = AssetDatabase.GetAssetPath(asset);
         if (string.IsNullOrEmpty(assetPath))

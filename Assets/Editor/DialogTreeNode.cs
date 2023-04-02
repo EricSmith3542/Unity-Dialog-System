@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[Serializable]
 public class DialogTreeNode : Node
 {
     protected DialogTreeGraphView graphView;
