@@ -4,12 +4,12 @@ using UnityEngine.UIElements;
 
 public class BooleanNode : DialogTreeNode
 {
-    public BooleanNode(string title, DialogTreeGraphView gv, Rect pos) : base(title, gv, pos)
+    public BooleanNode(string title, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
     {
         AddOutputPort();
     }
-    public BooleanNode(string title, DialogTreeGraphView gv) : this(title, gv, new Rect(0, 0, 0, 0)) { }
-    public BooleanNode(DialogTreeGraphView gv) : this("Start", gv) { }
+    public BooleanNode(string title, DialogTreeGraphView gv, string id) : this(title, gv, id, new Rect(0, 0, 0, 0)) { }
+    public BooleanNode(DialogTreeGraphView gv, string id) : this("Start", gv, id) { }
 
     private void AddOutputPort()
     {

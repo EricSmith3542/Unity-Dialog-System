@@ -9,15 +9,15 @@ public class DialogNode : DialogTreeNode
 
     int numOutputs = 0;
 
-    public DialogNode(string title, DialogTreeGraphView gv, Rect pos) : base(title, gv, pos)
+    public DialogNode(string title, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
     {
         BuildRequirementsPort();
         BuildPortAddSubtractButtons();
         AddOutputPort();
         BuildTextArea();
     }
-    public DialogNode(string title, DialogTreeGraphView gv) : this(title, gv, new Rect(0, 0, 0, 0)) { }
-    public DialogNode(DialogTreeGraphView gv) : this("Start", gv) { }
+    public DialogNode(string title, DialogTreeGraphView gv, string id) : this(title, gv, id, new Rect(0, 0, 0, 0)) { }
+    public DialogNode(DialogTreeGraphView gv, string id) : this("Start", gv, id) { }
         
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {

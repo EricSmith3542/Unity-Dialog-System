@@ -7,9 +7,11 @@ using UnityEngine.UIElements;
 public class DialogTreeNode : Node
 {
     protected DialogTreeGraphView graphView;
+    protected string id;
 
-    protected DialogTreeNode(string title, DialogTreeGraphView gv, Rect pos)
+    protected DialogTreeNode(string title, DialogTreeGraphView gv, string id, Rect pos)
     {
+        this.id = id;
         graphView = gv;
         SetPosition(pos);
         SetNodeCapabilites();
