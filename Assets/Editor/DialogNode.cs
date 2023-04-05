@@ -1,11 +1,14 @@
-﻿using UnityEditor.Experimental.GraphView;
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class DialogNode : DialogTreeNode
 {
     string dialog = "";
-    public string Dialog { get => dialog; set => dialog = value; }
+    public string Dialog { get => dialog; set => SetDialog(value); }
+    private TextField dialogTextField;
 
     int numOutputs = 0;
 
@@ -18,7 +21,23 @@ public class DialogNode : DialogTreeNode
     }
     public DialogNode(string title, DialogTreeGraphView gv, string id) : this(title, gv, id, new Rect(0, 0, 0, 0)) { }
     public DialogNode(DialogTreeGraphView gv, string id) : this("Start", gv, id) { }
-        
+
+    public override NodeData AsData()
+    {
+        SerializeableMap connections = new SerializeableMap();
+        foreach (Port outputPort in outputContainer.Query<Port>().ToList())
+        {
+            List<string> inputIds = new List<string>();
+            foreach (Edge edge in outputPort.connections)
+            {
+                inputIds.Add((edge.input.GetFirstAncestorOfType<DialogTreeNode>()).id);
+            }
+            connections.Add(outputPort.portName, inputIds);
+        }
+        return new DialogNodeData(id, nodeTitle, GetPosition(), connections, Dialog);
+    }
+
+    //CONTEXT MENU EXAMPLE
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         // Add a menu item that performs some action
@@ -29,6 +48,7 @@ public class DialogNode : DialogTreeNode
     {
         // Perform some action
     }
+    //END CONTEXT MENU EXAMPLE
 
     private void BuildRequirementsPort()
     {
@@ -60,6 +80,14 @@ public class DialogNode : DialogTreeNode
         output.portColor = Color.red;
         outputContainer.Add(output);
     }
+    public void AddOutputPort(string portName)
+    {
+        Port output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+        output.AddManipulator(new EdgeDragHelper(graphView));
+        output.portName = portName;
+        output.portColor = Color.red;
+        outputContainer.Add(output);
+    }
     private void RemoveOutputPort()
     {
         outputContainer.RemoveAt(outputContainer.childCount - 1);
@@ -68,20 +96,27 @@ public class DialogNode : DialogTreeNode
 
     private void BuildTextArea()
     {
-        var foldout = new Foldout();
+        Foldout foldout = new Foldout();
         foldout.text = "Dialogue Text";
         mainContainer.Add(foldout);
 
-        var textField = new TextField();
+        TextField textField = new TextField();
         textField.multiline = true;
         textField.RegisterValueChangedCallback(evt =>
         {
             Dialog = evt.newValue;
         });
+        dialogTextField = textField;
 
         //Nest text area in scrollview and foldout
         ScrollView scroll = new ScrollView();
         scroll.Add(textField);
         foldout.Add(scroll);
+    }
+
+    private void SetDialog(string text)
+    {
+        dialog = text;
+        dialogTextField.value = text;
     }
 }

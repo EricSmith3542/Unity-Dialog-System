@@ -49,6 +49,7 @@ public class DialogTreeEditorWindow : EditorWindow
     {
         if (state == PlayModeStateChange.ExitingEditMode)
         {
+            Debug.Log("WE HERE");
             Close();
         }
     }
@@ -68,7 +69,7 @@ public class DialogTreeEditorWindow : EditorWindow
             if (!openingExisting)
             {
                 //Create Starting Node
-                DialogNode node = new DialogNode(graphView, GetNextDialogNodeId());
+                DialogNode node = new DialogNode(graphView, "dialog-start");
 
                 //Add node to graph view
                 graphView.AddElement(node);
@@ -76,19 +77,48 @@ public class DialogTreeEditorWindow : EditorWindow
 
                 asset = CreateInstance<DialogTree>();
                 asset.treeName = "New Dialog Tree";
-                asset.startNode = node;
+                asset.startNode = (DialogNodeData)node.AsData();
             }
             else
             {
-                //
-                graphView.AddElement(asset.startNode);
-                foreach (DialogTreeNode node in asset.nodes)
+                foreach (NodeData data in asset.nodes)
                 {
-                    graphView.AddElement(node);
+                    graphView.AddElement(data.AsNode(graphView));
                 }
-                foreach(Edge edge in asset.edges)
+                foreach(NodeData data in asset.nodes)
                 {
-                    graphView.AddElement(edge);
+                    switch (data)
+                    {
+                        case DialogNodeData dialogData:
+                            DialogNode dialogNode = graphView.Query<DialogNode>().Where(node => node.id == dialogData.id).First();
+                            foreach (Port output in dialogNode.outputContainer.Query<Port>().ToList())
+                            {
+                                List<string> connectedNodeIds = dialogData.outputPortsConnectionsMap.Get(output.portName);
+                                if(connectedNodeIds != null)
+                                {
+                                    foreach (string nodeId in connectedNodeIds)
+                                    {
+                                        Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
+                                        Edge edge = input.ConnectTo(output);
+                                        graphView.Add(edge);
+                                    }
+                                }
+                            }
+                            break;
+
+                            //THESE ARENT CREATING PROPERLY AFTER CLOSE
+                        case BooleanNodeData boolData:
+                            Port boolNodePort = graphView.Query<Port>().Where(p => p.direction == Direction.Output && p.GetFirstAncestorOfType<BooleanNode>() != null && p.GetFirstAncestorOfType<BooleanNode>().id == boolData.id).First();
+                            foreach (string nodeId in boolData.connectedNodeIds)
+                            {
+                                Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
+                                Edge edge = input.ConnectTo(boolNodePort);
+                                graphView.Add(edge);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 openingExisting = false;
             }
@@ -125,7 +155,7 @@ public class DialogTreeEditorWindow : EditorWindow
 
     private static void AddDialogNode(bool isShortcut = false)
     {
-        Node another;
+        DialogNode another;
         int numNodes = graphView.graphElements.ToList().Count;
         if (isShortcut)
         {
@@ -147,7 +177,7 @@ public class DialogTreeEditorWindow : EditorWindow
 
     private static void AddBooleanNode(bool isShortcut = false)
     {
-        Node another;
+        BooleanNode another;
         int numNodes = graphView.graphElements.ToList().Count;
         if (isShortcut)
         {
@@ -176,22 +206,22 @@ public class DialogTreeEditorWindow : EditorWindow
     public static void CreateOrSaveAsset()
     {
         //Set the list of nodes and edges on the asset
-        List<DialogTreeNode> nodes = new List<DialogTreeNode>();
-        List<Edge> edges = new List<Edge>();
-        foreach (var element in graphView.graphElements)
+        List<NodeData> nodes = new List<NodeData>();
+        List<Edge> test = graphView.Query<Edge>().ToList();
+        foreach (DialogTreeNode element in graphView.Query<DialogTreeNode>().ToList())
         {
-            if (element is DialogTreeNode && !(element == asset.startNode))
+            NodeData data = element.AsData();
+            if (data is DialogNodeData)
             {
-                nodes.Add((DialogTreeNode)element);
+                ((DialogNodeData)data).outputPortsConnectionsMap.StoreAsString();
             }
-            else if (element is Edge)
+            else if(data is BooleanNodeData) 
             {
-                edges.Add((Edge)element);
+                ((BooleanNodeData)data).StoreIdsAsString();
             }
+            nodes.Add(data);
         }
         asset.nodes = nodes;
-        asset.edges = edges;
-        Debug.Log("NODES THAT ARENT START: " + nodes.Count);
 
         // Check if asset already exists
         string assetPath = AssetDatabase.GetAssetPath(asset);

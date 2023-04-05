@@ -10,10 +10,8 @@ public class DialogTree : ScriptableObject
     public string treeName;
     [SerializeField]
     public string characterId;
-    [SerializeField]
-    public DialogTreeNode startNode;
-    [SerializeField]
-    public List<DialogTreeNode> nodes;
-    [SerializeField]
-    public List<Edge> edges;
+    [SerializeReference]
+    public DialogNodeData startNode;
+    [SerializeReference]
+    public List<NodeData> nodes;
 }

@@ -80,6 +80,7 @@ public class EdgeDragHelper : MouseManipulator
             // If a valid port was released on, create a new edge between the ports
             if (releasedPort != null && releasedPort.direction != m_DraggedPort.direction)
             {
+                m_DraggedPort.Disconnect(m_Edge);
                 m_Edge = releasedPort.ConnectTo(m_DraggedPort);
                 graphView.AddElement(m_Edge);
             }

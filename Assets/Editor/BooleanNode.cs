@@ -1,4 +1,5 @@
-﻿using UnityEditor.Experimental.GraphView;
+﻿using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,5 +19,20 @@ public class BooleanNode : DialogTreeNode
         output.portName = "Output";
         output.portColor = Color.cyan;
         outputContainer.Add(output);
+    }
+
+    public override NodeData AsData()
+    {
+        Port output = outputContainer.Query<Port>().First();
+
+        List<string> connectedNodeIds = new List<string>();
+        foreach (Edge edge in output.connections)
+        {
+            if(edge.input != null)
+            {
+                connectedNodeIds.Add(((DialogNode)edge.input.parent.parent.parent.parent.parent).id);
+            }
+        }
+        return new BooleanNodeData(id, nodeTitle, GetPosition(), connectedNodeIds);
     }
 }

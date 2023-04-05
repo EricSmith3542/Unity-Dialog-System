@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76253dc9940ee544f95450f29d400710, type: 3}
+  m_Name: New Dialog Tree
+  m_EditorClassIdentifier: 
+  treeName: New Dialog Tree
+  characterId: 
+  startNode:
+    rid: 8111096310597943304
+  nodes:
+  - rid: 8111096310597943305
+  - rid: 8111096310597943306
+  - rid: 8111096310597943307
+  - rid: 8111096310597943308
+  references:
+    version: 2
+    RefIds:
+    - rid: 8111096310597943304
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: dialog-start
+        title: Start
+        pos:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: NaN
+          height: NaN
+        dialog: 
+        outputPortsConnectionsMap:
+          rid: 8111096310597943309
+    - rid: 8111096310597943305
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: dialog-start
+        title: Start
+        pos:
+          serializedVersion: 2
+          x: 473
+          y: 118
+          width: 190
+          height: 169
+        dialog: 
+        outputPortsConnectionsMap:
+          rid: 8111096310597943310
+    - rid: 8111096310597943306
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: dialog-0
+        title: Node 2
+        pos:
+          serializedVersion: 2
+          x: 915
+          y: 29
+          width: 190
+          height: 169
+        dialog: 
+        outputPortsConnectionsMap:
+          rid: 8111096310597943311
+    - rid: 8111096310597943307
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: bool-0
+        title: Boop
+        pos:
+          serializedVersion: 2
+          x: 558
+          y: 348
+          width: 77
+          height: 83
+        connectedNodesAsString: dialog-1
+        connectedNodeIds:
+        - dialog-1
+    - rid: 8111096310597943308
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: dialog-1
+        title: Scoop
+        pos:
+          serializedVersion: 2
+          x: 909
+          y: 226
+          width: 190
+          height: 169
+        dialog: 
+        outputPortsConnectionsMap:
+          rid: 8111096310597943312
+    - rid: 8111096310597943309
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        valuesAsString: 
+    - rid: 8111096310597943310
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        valuesAsString: Option 0:dialog-1##dialog-0
+    - rid: 8111096310597943311
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        valuesAsString: Option 0:NONE
+    - rid: 8111096310597943312
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        valuesAsString: Option 0:NONE
