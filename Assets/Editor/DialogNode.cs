@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class DialogNode : DialogTreeNode
 {
-    string dialog = "";
+    private string dialog = "";
     public string Dialog { get => dialog; set => SetDialog(value); }
     private TextField dialogTextField;
 

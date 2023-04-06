@@ -12,7 +12,7 @@ public class DialogNodeData : NodeData
         this.dialog = dialog;
     }
     [SerializeField]
-    string dialog;
+    private string dialog;
     [SerializeReference]
     public SerializeableMap outputPortsConnectionsMap;
 

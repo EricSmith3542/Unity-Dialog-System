@@ -45,14 +45,6 @@ public class DialogTreeEditorWindow : EditorWindow
             EditorUtility.DisplayDialog("Alert", "In order to open the Dialog Tree Editor, please select a Dialog Tree ScriptableObject or go to Create > Dialog Tree", "OK");
         }
     }
-    private void OnPlayModeStateChanged(PlayModeStateChange state)
-    {
-        if (state == PlayModeStateChange.ExitingEditMode)
-        {
-            Debug.Log("WE HERE");
-            Close();
-        }
-    }
 
     private void OnEnable()
     {
@@ -63,71 +55,111 @@ public class DialogTreeEditorWindow : EditorWindow
             graphView = new DialogTreeGraphView();
             graphView.style.width = new StyleLength(new Length(100f, LengthUnit.Percent));
             graphView.style.height = new StyleLength(new Length(100f, LengthUnit.Percent));
-            //Add graph view to window
             rootVisualElement.Add(graphView);
 
+            //Reset node counts
+            dialogNodesCreated = 0;
+            booleanNodesCreated = 0;
+
+            //openingExisting is true when the editor window is opened using the OpenDialogTreeEditor method
             if (!openingExisting)
             {
-                //Create Starting Node
-                DialogNode node = new DialogNode(graphView, "dialog-start");
-
-                //Add node to graph view
-                graphView.AddElement(node);
-
-
-                asset = CreateInstance<DialogTree>();
-                asset.treeName = "New Dialog Tree";
-                asset.startNode = (DialogNodeData)node.AsData();
+                OpenNewGraph();
             }
             else
             {
-                foreach (NodeData data in asset.nodes)
-                {
-                    graphView.AddElement(data.AsNode(graphView));
-                }
-                foreach(NodeData data in asset.nodes)
-                {
-                    switch (data)
-                    {
-                        case DialogNodeData dialogData:
-                            DialogNode dialogNode = graphView.Query<DialogNode>().Where(node => node.id == dialogData.id).First();
-                            foreach (Port output in dialogNode.outputContainer.Query<Port>().ToList())
-                            {
-                                List<string> connectedNodeIds = dialogData.outputPortsConnectionsMap.Get(output.portName);
-                                if(connectedNodeIds != null)
-                                {
-                                    foreach (string nodeId in connectedNodeIds)
-                                    {
-                                        Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
-                                        Edge edge = input.ConnectTo(output);
-                                        graphView.Add(edge);
-                                    }
-                                }
-                            }
-                            break;
-
-                            //THESE ARENT CREATING PROPERLY AFTER CLOSE
-                        case BooleanNodeData boolData:
-                            Port boolNodePort = graphView.Query<Port>().Where(p => p.direction == Direction.Output && p.GetFirstAncestorOfType<BooleanNode>() != null && p.GetFirstAncestorOfType<BooleanNode>().id == boolData.id).First();
-                            foreach (string nodeId in boolData.connectedNodeIds)
-                            {
-                                Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
-                                Edge edge = input.ConnectTo(boolNodePort);
-                                graphView.Add(edge);
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                openingExisting = false;
+                OpenSavedGraph();
             }
             initDone = true;
         }
-        
-        
+
+        AddUIButtons();
+    }
+
+    private static void OpenNewGraph()
+    {
+        //Create Starting Node
+        DialogNode node = new DialogNode(graphView, "dialog-" + GetNextDialogNodeId());
+
+        //Add node to graph view
+        graphView.AddElement(node);
 
 
+        asset = CreateInstance<DialogTree>();
+        asset.treeName = "New Dialog Tree";
+        asset.startNode = (DialogNodeData)node.AsData();
+    }
+
+    private static void OpenSavedGraph()
+    {
+        BuildNodesFromSaveData();
+        BuildEdgesFromSaveData();
+        openingExisting = false;
+    }
+
+    private static void BuildEdgesFromSaveData()
+    {
+        foreach (NodeData data in asset.nodes)
+        {
+            switch (data)
+            {
+                case DialogNodeData dialogData:
+                    DialogNode dialogNode = graphView.Query<DialogNode>().Where(node => node.id == dialogData.id).First();
+                    foreach (Port output in dialogNode.outputContainer.Query<Port>().ToList())
+                    {
+                        List<string> connectedNodeIds = dialogData.outputPortsConnectionsMap.Get(output.portName);
+                        if (connectedNodeIds != null)
+                        {
+                            foreach (string nodeId in connectedNodeIds)
+                            {
+                                Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
+                                Edge edge = input.ConnectTo(output);
+                                graphView.Add(edge);
+                            }
+                        }
+                    }
+                    break;
+                case BooleanNodeData boolData:
+                    Port boolNodePort = graphView.Query<Port>().Where(p => p.direction == Direction.Output && p.GetFirstAncestorOfType<BooleanNode>() != null && p.GetFirstAncestorOfType<BooleanNode>().id == boolData.id).First();
+                    foreach (string nodeId in boolData.connectedNodeIds)
+                    {
+                        Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
+                        Edge edge = input.ConnectTo(boolNodePort);
+                        graphView.Add(edge);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private static void BuildNodesFromSaveData()
+    {
+        foreach (NodeData data in asset.nodes)
+        {
+            //Create and add node to the graph
+            DialogTreeNode node = data.AsNode(graphView);
+            graphView.AddElement(node);
+
+            //Increment approriate node count
+            switch (node)
+            {
+                case DialogNode d:
+                    dialogNodesCreated++;
+                    break;
+                case BooleanNode b:
+                    booleanNodesCreated++;
+                    break;
+                default:
+                    Debug.Log("This is a new node type, and the node counts are not being updated properly. Add a case for this node type.");
+                    break;
+            }
+        }
+    }
+
+    private void AddUIButtons()
+    {
         Button dialogNodeAddButton = new Button(() => AddDialogNode());
         dialogNodeAddButton.text = "Create New Dialog Node";
         dialogNodeAddButton.tooltip = "Add Dialog Node";
@@ -156,14 +188,13 @@ public class DialogTreeEditorWindow : EditorWindow
     private static void AddDialogNode(bool isShortcut = false)
     {
         DialogNode another;
-        int numNodes = graphView.graphElements.ToList().Count;
         if (isShortcut)
         {
-            another = new DialogNode("Node " + numNodes, graphView, GetNextDialogNodeId(), new Rect(mousePos, Vector2.zero));
+            another = new DialogNode("Dialog " + dialogNodesCreated, graphView, GetNextDialogNodeId(), new Rect(mousePos, Vector2.zero));
         }
         else
         {
-            another = new DialogNode("Node " + numNodes, graphView, GetNextDialogNodeId());
+            another = new DialogNode("Dialog " + dialogNodesCreated, graphView, GetNextDialogNodeId());
         }
 
         graphView.AddElement(another);
@@ -178,14 +209,13 @@ public class DialogTreeEditorWindow : EditorWindow
     private static void AddBooleanNode(bool isShortcut = false)
     {
         BooleanNode another;
-        int numNodes = graphView.graphElements.ToList().Count;
         if (isShortcut)
         {
-            another = new BooleanNode("Node " + numNodes, graphView, GetNextBooleanNodeId(), new Rect(mousePos, Vector2.zero));
+            another = new BooleanNode("Condition " + booleanNodesCreated, graphView, GetNextBooleanNodeId(), new Rect(mousePos, Vector2.zero));
         }
         else
         {
-            another = new BooleanNode("Node " + numNodes, graphView, GetNextBooleanNodeId());
+            another = new BooleanNode("Condition " + booleanNodesCreated, graphView, GetNextBooleanNodeId());
         }
 
         graphView.AddElement(another);
@@ -240,8 +270,19 @@ public class DialogTreeEditorWindow : EditorWindow
             // Asset already exists, ask user if they want to overwrite it
             if (!EditorUtility.DisplayDialog("Overwrite Existing Asset?", "The asset already exists. Do you want to overwrite it?", "Yes", "No"))
                 return;
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            ScriptableObject oldAsset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
+            if(oldAsset != null)
+            {
+                EditorUtility.CopySerialized(asset, oldAsset);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Alert", "The old version of this dialog tree could not be found, and therefore cannot be overwritten", "OK");
+            }
+
+            
         }
     }
 }
