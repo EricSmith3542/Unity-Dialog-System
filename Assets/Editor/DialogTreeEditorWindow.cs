@@ -61,6 +61,9 @@ public class DialogTreeEditorWindow : EditorWindow
             dialogNodesCreated = 0;
             booleanNodesCreated = 0;
 
+            //Refresh the static set of names to clear out old ids from previously opened DialogTreeEditorWindows
+            BooleanNode.RefreshPortNameSet();
+
             //openingExisting is true when the editor window is opened using the OpenDialogTreeEditor method
             if (!openingExisting)
             {
@@ -124,8 +127,11 @@ public class DialogTreeEditorWindow : EditorWindow
                     foreach (string nodeId in boolData.connectedNodeIds)
                     {
                         Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
-                        Edge edge = input.ConnectTo(boolNodePort);
-                        graphView.Add(edge);
+                        if(input != null)
+                        {
+                            Edge edge = input.ConnectTo(boolNodePort);
+                            graphView.Add(edge);
+                        }
                     }
                     break;
                 default:
@@ -209,13 +215,14 @@ public class DialogTreeEditorWindow : EditorWindow
     private static void AddBooleanNode(bool isShortcut = false)
     {
         BooleanNode another;
+        string titleAndPort = "Condition " + booleanNodesCreated;
         if (isShortcut)
         {
-            another = new BooleanNode("Condition " + booleanNodesCreated, graphView, GetNextBooleanNodeId(), new Rect(mousePos, Vector2.zero));
+            another = new BooleanNode(titleAndPort, titleAndPort, graphView, GetNextBooleanNodeId(), new Rect(mousePos, Vector2.zero));
         }
         else
         {
-            another = new BooleanNode("Condition " + booleanNodesCreated, graphView, GetNextBooleanNodeId());
+            another = new BooleanNode(titleAndPort, titleAndPort, graphView, GetNextBooleanNodeId());
         }
 
         graphView.AddElement(another);

@@ -53,7 +53,7 @@ public abstract class DialogTreeNode : Node
     {
         AddOutputPort(defaultPortPrefix + portCount++);
     }
-    public void AddOutputPort(string portName)
+    public virtual void AddOutputPort(string portName)
     {
         Port output = InstantiateEditablePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
         output.AddManipulator(new EdgeDragHelper(graphView));
@@ -77,6 +77,10 @@ public abstract class DialogTreeNode : Node
     }
 
     public abstract NodeData AsData();
+    public abstract bool IsUniqueOutputName(string name);
+
+    //Method for updating the uniqueness tracker of sub-classes when ports are renamed
+    public abstract void ChangeName(string oldName, string newName);
 
     public static void DisplayVisualElementHierarchy(VisualElement element, int depth = 0)
     {

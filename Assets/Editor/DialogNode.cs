@@ -9,9 +9,11 @@ public class DialogNode : DialogTreeNode
     private string dialog = "";
     public string Dialog { get => dialog; set => SetDialog(value); }
     private TextField dialogTextField;
+    private HashSet<string> outputNameSet;
 
     public DialogNode(string title, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
     {
+        outputNameSet = new HashSet<string>();
         defaultPortPrefix = "Option ";
         BuildRequirementsPort();
         BuildPortAddSubtractButtons();
@@ -49,6 +51,32 @@ public class DialogNode : DialogTreeNode
     }
     //END CONTEXT MENU EXAMPLE
 
+    public override void AddOutputPort(string portName)
+    {
+        if (!outputNameSet.Contains(portName))
+        {
+            base.AddOutputPort(portName);
+            outputNameSet.Add(portName);
+        }
+        else
+        {
+            Debug.LogError("Tried to name the new port \"" + portName + "\" when a port with that name already exists on this node. Port names must be unique within a node.");
+        }
+        
+    }
+
+    public override bool IsUniqueOutputName(string name)
+    {
+        return !outputNameSet.Contains(name);
+    }
+
+    public override void ChangeName(string oldName, string newName)
+    {
+        if (oldName == newName) { return; }
+        outputNameSet.Remove(oldName);
+        outputNameSet.Add(newName);
+    }
+
     private void BuildRequirementsPort()
     {
         Port input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
@@ -74,7 +102,9 @@ public class DialogNode : DialogTreeNode
     
     private void RemoveOutputPort()
     {
-        outputContainer.RemoveAt(outputContainer.childCount - 1);
+        VisualElement removePort = outputContainer.ElementAt(outputContainer.childCount - 1);
+        outputNameSet.Remove(EditableLabel.FetchEditableLabel(removePort).text);
+        outputContainer.Remove(removePort);
         portCount--;
     }
 

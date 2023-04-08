@@ -17,9 +17,12 @@ MonoBehaviour:
   startNode:
     rid: 8111096358333841537
   nodes:
-  - rid: 8111096358333841538
-  - rid: 8111096358333841539
-  - rid: 8111096358333841540
+  - rid: 8111096375471767557
+  - rid: 8111096375471767558
+  - rid: 8111096375471767559
+  - rid: 8111096375471767560
+  - rid: 8111096375471767561
+  - rid: 8111096375471767562
   references:
     version: 2
     RefIds:
@@ -37,7 +40,11 @@ MonoBehaviour:
         dialog: 
         outputPortsConnectionsMap:
           rid: 8111096358333841541
-    - rid: 8111096358333841538
+    - rid: 8111096358333841541
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        valuesAsString: 
+    - rid: 8111096375471767557
       type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
         id: dialog-0
@@ -50,8 +57,8 @@ MonoBehaviour:
           height: 193
         dialog: 11111111
         outputPortsConnectionsMap:
-          rid: 8111096358333841542
-    - rid: 8111096358333841539
+          rid: 8111096375471767563
+    - rid: 8111096375471767558
       type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
         id: bool-0
@@ -66,7 +73,7 @@ MonoBehaviour:
         outputName: 4
         connectedNodeIds:
         - dialog-1
-    - rid: 8111096358333841540
+    - rid: 8111096375471767559
       type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
         id: dialog-1
@@ -75,20 +82,58 @@ MonoBehaviour:
           serializedVersion: 2
           x: 1113
           y: 171
-          width: 156
-          height: 169
+          width: 157
+          height: 217
         dialog: 451535
         outputPortsConnectionsMap:
-          rid: 8111096358333841543
-    - rid: 8111096358333841541
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+          rid: 8111096375471767564
+    - rid: 8111096375471767560
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
-        valuesAsString: 
-    - rid: 8111096358333841542
+        id: bool-1
+        title: Condition 1
+        pos:
+          serializedVersion: 2
+          x: 286
+          y: 702
+          width: 98
+          height: 83
+        connectedNodesAsString: 
+        outputName: 5
+        connectedNodeIds: []
+    - rid: 8111096375471767561
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: bool-2
+        title: Condition 2
+        pos:
+          serializedVersion: 2
+          x: 1011
+          y: 604
+          width: 99
+          height: 83
+        connectedNodesAsString: 
+        outputName: Flooooop
+        connectedNodeIds: []
+    - rid: 8111096375471767562
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: bool-3
+        title: Condition 3
+        pos:
+          serializedVersion: 2
+          x: 617
+          y: 607
+          width: 106
+          height: 83
+        connectedNodesAsString: 
+        outputName: Condition 0
+        connectedNodeIds: []
+    - rid: 8111096375471767563
       type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
       data:
         valuesAsString: 1:dialog-1,2 1:NONE
-    - rid: 8111096358333841543
+    - rid: 8111096375471767564
       type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
       data:
-        valuesAsString: 3:NONE
+        valuesAsString: 3:NONE,4:NONE,6:NONE

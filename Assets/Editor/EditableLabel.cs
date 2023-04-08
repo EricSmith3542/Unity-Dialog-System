@@ -1,8 +1,10 @@
-﻿using UnityEngine.UIElements;
+﻿using UnityEditor;
+using UnityEngine.UIElements;
 
 public class EditableLabel : Label
 {
     private TextField textField;
+    private string oldText;
 
     public EditableLabel(string labelText) : base(labelText)
     {
@@ -16,6 +18,7 @@ public class EditableLabel : Label
     {
         if (evt.clickCount == 2 && textField == null)
         {
+            oldText = text;
             textField = new TextField { value = text };
             textField.RegisterCallback<BlurEvent>(OnTextFieldBlur);
             Add(textField);
@@ -32,10 +35,37 @@ public class EditableLabel : Label
     {
         if (textField != null)
         {
-            text = textField.value;
-            Remove(textField);
-            AddToClassList("editable-label");
-            textField = null;
+            string newName = textField.value;
+            //Dialog and Boolean nodes handle output name uniqueness differently
+            //so we switch depending on the parent type and ensure the new text of the string obeys uniqueness rules
+            DialogTreeNode parentNode = GetFirstAncestorOfType<DialogTreeNode>();
+            bool validName = false;
+            switch (parentNode)
+            {
+                case DialogNode dialogNode:
+                    validName = dialogNode.IsUniqueOutputName(newName);
+                    break;
+                case BooleanNode booleanNode:
+                    validName = booleanNode.IsUniqueOutputName(newName);
+                    break;
+                default:
+                    break;
+            }
+
+            if (validName || newName == oldText)
+            {
+                text = newName;
+                Remove(textField);
+                AddToClassList("editable-label");
+                parentNode.ChangeName(oldText, newName);
+                textField = null;
+                oldText = null;
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Invalid Port Name", "The port name \"" + newName + "\" violates the uniqueness rules of this node type. Please choose a different name.", "OK");
+            }
+            
         }
     }
 
