@@ -37,8 +37,7 @@ public class NodeSelectionDragger : SelectionDragger
 
     private void SelectOnMouseDown(MouseDownEvent evt)
     {
-        // If Shift key is not pressed, do not allow selection dragging
-        if (evt.button == (int)MouseButton.LeftMouse)
+        if (evt.button == (int)MouseButton.LeftMouse && evt.target is DialogTreeGraphView)
         {
             ((DialogTreeGraphView)this.target).ClearSelection();
             initialMousePosition = evt.localMousePosition;

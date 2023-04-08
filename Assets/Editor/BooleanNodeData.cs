@@ -6,18 +6,21 @@ using UnityEngine;
 [Serializable]
 public class BooleanNodeData : NodeData
 {
-    public BooleanNodeData(string id, string title, Rect pos, List<string> connections) : base(id, title, pos)
-    {
-        connectedNodeIds = connections;
-    }
     [SerializeField]
     public string connectedNodesAsString;
-
+    [SerializeField]
+    public string outputName;
     public List<string> connectedNodeIds;
+
+    public BooleanNodeData(string id, string title, string outputName, Rect pos, List<string> connections) : base(id, title, pos)
+    {
+        connectedNodeIds = connections;
+        this.outputName = outputName;
+    }
 
     public override DialogTreeNode AsNode(DialogTreeGraphView gv)
     {
-        BooleanNode node = new BooleanNode(title, gv, id, pos);
+        BooleanNode node = new BooleanNode(title, outputName, gv, id, pos);
         connectedNodeIds = new List<string>(connectedNodesAsString.Split(","));
         return node;
     }

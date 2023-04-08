@@ -10,19 +10,24 @@ public class EditableLabel : Label
         RegisterCallback<ChangeEvent<string>>(OnLabelChanged);
         style.alignSelf = Align.Center;
     }
+    public EditableLabel() : this("") { }
 
     private void OnMouseDown(MouseDownEvent evt)
     {
-        if (evt.clickCount == 2)
+        if (evt.clickCount == 2 && textField == null)
         {
             textField = new TextField { value = text };
             textField.RegisterCallback<BlurEvent>(OnTextFieldBlur);
             Add(textField);
             RemoveFromClassList("editable-label");
             textField.SelectAll();
+            evt.StopPropagation();
         }
     }
 
+    //TODO: IMPROVE EDITABLE LABE
+    //Need to ensure Option name uniqueness within nodes
+    //Make it smoother to use
     private void OnTextFieldBlur(BlurEvent evt)
     {
         if (textField != null)
@@ -37,5 +42,10 @@ public class EditableLabel : Label
     private void OnLabelChanged(ChangeEvent<string> evt)
     {
         evt.StopPropagation();
+    }
+
+    public static EditableLabel FetchEditableLabel(VisualElement element)
+    {
+        return element.Query<EditableLabel>().First();
     }
 }

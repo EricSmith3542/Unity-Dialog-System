@@ -79,7 +79,7 @@ public class DialogTreeEditorWindow : EditorWindow
     private static void OpenNewGraph()
     {
         //Create Starting Node
-        DialogNode node = new DialogNode(graphView, "dialog-" + GetNextDialogNodeId());
+        DialogNode node = new DialogNode(graphView, GetNextDialogNodeId());
 
         //Add node to graph view
         graphView.AddElement(node);
@@ -107,7 +107,7 @@ public class DialogTreeEditorWindow : EditorWindow
                     DialogNode dialogNode = graphView.Query<DialogNode>().Where(node => node.id == dialogData.id).First();
                     foreach (Port output in dialogNode.outputContainer.Query<Port>().ToList())
                     {
-                        List<string> connectedNodeIds = dialogData.outputPortsConnectionsMap.Get(output.portName);
+                        List<string> connectedNodeIds = dialogData.outputPortsConnectionsMap.Get(EditableLabel.FetchEditableLabel(output).text);
                         if (connectedNodeIds != null)
                         {
                             foreach (string nodeId in connectedNodeIds)

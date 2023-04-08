@@ -15,18 +15,18 @@ MonoBehaviour:
   treeName: New Dialog Tree
   characterId: 
   startNode:
-    rid: 8111096331212947456
+    rid: 8111096358333841537
   nodes:
-  - rid: 8111096331212947462
-  - rid: 8111096331212947463
-  - rid: 8111096331212947464
+  - rid: 8111096358333841538
+  - rid: 8111096358333841539
+  - rid: 8111096358333841540
   references:
     version: 2
     RefIds:
-    - rid: 8111096331212947456
+    - rid: 8111096358333841537
       type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
-        id: dialog-dialog-0
+        id: dialog-0
         title: Start
         pos:
           serializedVersion: 2
@@ -36,62 +36,59 @@ MonoBehaviour:
           height: NaN
         dialog: 
         outputPortsConnectionsMap:
-          rid: 8111096331212947459
-    - rid: 8111096331212947459
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: 
-    - rid: 8111096331212947462
+          rid: 8111096358333841541
+    - rid: 8111096358333841538
       type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
-        id: dialog-dialog-0
+        id: dialog-0
         title: Start
         pos:
           serializedVersion: 2
-          x: 0
-          y: 0
-          width: 190
-          height: 169
-        dialog: 1
+          x: 240
+          y: 210
+          width: 164
+          height: 193
+        dialog: 11111111
         outputPortsConnectionsMap:
-          rid: 8111096331212947465
-    - rid: 8111096331212947463
+          rid: 8111096358333841542
+    - rid: 8111096358333841539
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
+      data:
+        id: bool-0
+        title: Condition 0
+        pos:
+          serializedVersion: 2
+          x: 289
+          y: 533
+          width: 100
+          height: 83
+        connectedNodesAsString: dialog-1
+        outputName: 4
+        connectedNodeIds:
+        - dialog-1
+    - rid: 8111096358333841540
       type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
       data:
         id: dialog-1
         title: Dialog 1
         pos:
           serializedVersion: 2
-          x: 482
-          y: 65
-          width: 190
+          x: 1113
+          y: 171
+          width: 156
           height: 169
-        dialog: 2
+        dialog: 451535
         outputPortsConnectionsMap:
-          rid: 8111096331212947466
-    - rid: 8111096331212947464
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-2
-        title: Dialog 2
-        pos:
-          serializedVersion: 2
-          x: 526
-          y: 283
-          width: 190
-          height: 169
-        dialog: 3
-        outputPortsConnectionsMap:
-          rid: 8111096331212947467
-    - rid: 8111096331212947465
+          rid: 8111096358333841543
+    - rid: 8111096358333841541
       type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
       data:
-        valuesAsString: Option 0:dialog-1##dialog-2
-    - rid: 8111096331212947466
+        valuesAsString: 
+    - rid: 8111096358333841542
       type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
       data:
-        valuesAsString: Option 0:NONE
-    - rid: 8111096331212947467
+        valuesAsString: 1:dialog-1,2 1:NONE
+    - rid: 8111096358333841543
       type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
       data:
-        valuesAsString: Option 0:NONE
+        valuesAsString: 3:NONE

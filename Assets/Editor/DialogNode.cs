@@ -10,10 +10,9 @@ public class DialogNode : DialogTreeNode
     public string Dialog { get => dialog; set => SetDialog(value); }
     private TextField dialogTextField;
 
-    int numOutputs = 0;
-
     public DialogNode(string title, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
     {
+        defaultPortPrefix = "Option ";
         BuildRequirementsPort();
         BuildPortAddSubtractButtons();
         AddOutputPort();
@@ -32,7 +31,7 @@ public class DialogNode : DialogTreeNode
             {
                 inputIds.Add((edge.input.GetFirstAncestorOfType<DialogTreeNode>()).id);
             }
-            connections.Add(outputPort.portName, inputIds);
+            connections.Add(EditableLabel.FetchEditableLabel(outputPort).text, inputIds);
         }
         return new DialogNodeData(id, nodeTitle, GetPosition(), connections, Dialog);
     }
@@ -72,26 +71,11 @@ public class DialogNode : DialogTreeNode
         outputContainer.Add(subButton);
     }
 
-    private void AddOutputPort()
-    {
-        Port output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-        output.AddManipulator(new EdgeDragHelper(graphView));
-        output.portName = "Option " + numOutputs++;
-        output.portColor = Color.red;
-        outputContainer.Add(output);
-    }
-    public void AddOutputPort(string portName)
-    {
-        Port output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-        output.AddManipulator(new EdgeDragHelper(graphView));
-        output.portName = portName;
-        output.portColor = Color.red;
-        outputContainer.Add(output);
-    }
+    
     private void RemoveOutputPort()
     {
         outputContainer.RemoveAt(outputContainer.childCount - 1);
-        numOutputs--;
+        portCount--;
     }
 
     private void BuildTextArea()
