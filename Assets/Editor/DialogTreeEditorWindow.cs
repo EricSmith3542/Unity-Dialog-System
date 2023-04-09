@@ -16,12 +16,17 @@ public class DialogTreeEditorWindow : EditorWindow
     private static bool openingExisting = false;
     private bool initDone = false;
 
+    private float _zoom = 1f;
+    private Vector2 _offset;
+    private Vector2 _dragStartPos;
+
     [MenuItem("Assets/Create/Dialog Tree")]
     public static void OpenWindow()
     {
         //TODO: Dock the window on creation
         EditorWindow window = GetWindow<DialogTreeEditorWindow>();
         window.titleContent = new GUIContent("New Dialog Tree");
+        window.wantsLessLayoutEvents = false;
         window.Show();
     }
 
@@ -237,9 +242,68 @@ public class DialogTreeEditorWindow : EditorWindow
     private void OnGUI()
     {
         mousePos = Event.current.mousePosition;
+        //HandleZoom();
+        //MousePan();
+        //MouseWheelZoom();
     }
 
-    
+    private void HandleZoom()
+    {
+        var e = Event.current;
+        if (e.type == EventType.ScrollWheel)
+        {
+            Debug.Log("SCroll");
+            var zoomDelta = e.delta.y * 0.1f;
+            var oldZoom = _zoom;
+            _zoom = Mathf.Clamp(_zoom + zoomDelta, 0.1f, 10f);
+
+            // Adjust the offset to keep the zoom centered on the mouse position
+            var mouseWorldPos = e.mousePosition / oldZoom - _offset / oldZoom;
+            _offset = (mouseWorldPos * _zoom - e.mousePosition / _zoom);
+
+            EditorGUIUtility.ScaleAroundPivot(Vector2.one * _zoom, _offset);
+
+
+            e.Use();
+            Repaint();
+        }
+    }
+
+    private void MousePan()
+    {
+        var e = Event.current;
+        if (e.type == EventType.MouseDown && e.button == (int)MouseButton.MiddleMouse && e.clickCount == 1)
+        {
+            _dragStartPos = e.mousePosition;
+        }
+        else if (e.type == EventType.MouseDrag && e.button == 0)
+        {
+            var dragOffset = e.mousePosition - _dragStartPos;
+            _offset += dragOffset;
+            _dragStartPos = e.mousePosition;
+            e.Use();
+            Repaint();
+        }
+    }
+
+    private void MouseWheelZoom()
+    {
+        var e = Event.current;
+        if (e.type == EventType.ScrollWheel && e.alt)
+        {
+            var zoomDelta = e.delta.y * 0.1f;
+            var oldZoom = _zoom;
+            _zoom = Mathf.Clamp(_zoom + zoomDelta, 0.1f, 10f);
+
+            // Adjust the offset to keep the zoom centered on the mouse position
+            var mouseWorldPos = e.mousePosition / oldZoom - _offset / oldZoom;
+            _offset = (mouseWorldPos * _zoom - e.mousePosition / _zoom);
+            e.Use();
+            Repaint();
+        }
+    }
+
+
     public static void CreateOrSaveAsset()
     {
         //Set the list of nodes and edges on the asset

@@ -53,11 +53,12 @@ public class NodeDragger : MouseManipulator
     {
         if (m_Active)
         {
+            float zoom = graphView.contentViewContainer.transform.scale.x;
             for (int i = 0; i < graphView.selection.Count; i++)
             {
                 VisualElement node = (VisualElement)graphView.selection[i];
-                node.style.left = start_lefts[i] + (e.mousePosition.x - m_Start.x);
-                node.style.top = start_tops[i] + (e.mousePosition.y - m_Start.y);
+                node.style.left = start_lefts[i] + ((e.mousePosition.x - m_Start.x) / zoom);
+                node.style.top = start_tops[i] + ((e.mousePosition.y - m_Start.y)/ zoom);
             }
             e.StopPropagation();
         }

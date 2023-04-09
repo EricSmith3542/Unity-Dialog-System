@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,7 +9,10 @@ public class DialogNode : DialogTreeNode
 {
     private string dialog = "";
     public string Dialog { get => dialog; set => SetDialog(value); }
-    private TextField dialogTextField;
+
+    private ColorField borderColorField, backGroundColorField;
+    private ObjectField borderSpriteField, backGroundSpriteField;
+    private TextField dialogTextField, displayNameField;
     private HashSet<string> outputNameSet;
 
     public DialogNode(string title, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
@@ -16,6 +20,7 @@ public class DialogNode : DialogTreeNode
         outputNameSet = new HashSet<string>();
         defaultPortPrefix = "Option ";
         BuildRequirementsPort();
+        BuildInputFields();
         BuildPortAddSubtractButtons();
         AddOutputPort();
         BuildTextArea();
@@ -84,6 +89,31 @@ public class DialogNode : DialogTreeNode
         input.portName = "Requirements";
         input.portColor = Color.green;
         inputContainer.Add(input);
+        AddDivider(inputContainer);
+    }
+
+    private void AddDivider(VisualElement parentElement)
+    {
+        VisualElement divider = new VisualElement();
+        divider.AddToClassList("divider");
+        divider.style.height = 1;
+        divider.style.backgroundColor = new Color(.1f, .1f, .1f);
+        parentElement.Add(divider);
+    }
+
+    private void BuildInputFields()
+    {
+        displayNameField = new TextField("Display Name") { value = "???" };
+        borderColorField = new ColorField("Border Color/Tint");
+        borderSpriteField = new ObjectField("Border Sprite") { objectType = typeof(Sprite) };
+        backGroundColorField = new ColorField("Background Color/Tint");
+        backGroundSpriteField = new ObjectField("Background Sprite") { objectType = typeof(Sprite) }; ;
+
+        inputContainer.Add(displayNameField);
+        inputContainer.Add(borderColorField);
+        inputContainer.Add(borderSpriteField);
+        inputContainer.Add(backGroundColorField);
+        inputContainer.Add(backGroundSpriteField);
     }
 
     private void BuildPortAddSubtractButtons()
@@ -110,6 +140,8 @@ public class DialogNode : DialogTreeNode
 
     private void BuildTextArea()
     {
+        AddDivider(mainContainer);
+
         Foldout foldout = new Foldout();
         foldout.text = "Dialogue Text";
         mainContainer.Add(foldout);

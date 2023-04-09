@@ -55,22 +55,26 @@ public class SerializeableMap
 
     public void RecreateValuesListFromString()
     {
-        Debug.Log("RECONSTRUCT FROM: " + valuesAsString);
-        foreach (string keyAndValueString in valuesAsString.Split(","))
+        if(valuesAsString != null && valuesAsString.Length > 0)
         {
-            string[] keyAndValue = keyAndValueString.Split(":");
-            foreach (string value in keyAndValue[1].Split("##"))
+            Debug.Log("RECONSTRUCT FROM: " + valuesAsString);
+            foreach (string keyAndValueString in valuesAsString.Split(","))
             {
-                if (value == "NONE") {
-                    if(keys.IndexOf(keyAndValue[0]) == -1)
-                    {
-                        Add(keyAndValue[0], new List<string>());
-                    }
-                    continue;
-                }
-                else
+                string[] keyAndValue = keyAndValueString.Split(":");
+                foreach (string value in keyAndValue[1].Split("##"))
                 {
-                    Add(keyAndValue[0], value);
+                    if (value == "NONE")
+                    {
+                        if (keys.IndexOf(keyAndValue[0]) == -1)
+                        {
+                            Add(keyAndValue[0], new List<string>());
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        Add(keyAndValue[0], value);
+                    }
                 }
             }
         }

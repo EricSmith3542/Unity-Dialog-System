@@ -14,7 +14,6 @@ public class NodeSelectionDragger : SelectionDragger
     public NodeSelectionDragger(DialogTreeGraphView gv)
     {
         graphView = gv;
-
         //Create and style the drag rect
         dragRect = new DragRect();
         graphView.AddElement(dragRect);
@@ -39,18 +38,18 @@ public class NodeSelectionDragger : SelectionDragger
     {
         if (evt.button == (int)MouseButton.LeftMouse && evt.target is DialogTreeGraphView)
         {
+            //Clear the current selection
             ((DialogTreeGraphView)this.target).ClearSelection();
-            initialMousePosition = evt.localMousePosition;
-            // Start selection dragging
+
+            //Get the mouse position relative to the pan/zoom of the graphview
+            initialMousePosition = graphView.contentViewContainer.WorldToLocal(evt.mousePosition);
+
+            //Create and visualize selection rectangle
             m_SelectionRect = new Rect(initialMousePosition, Vector2.zero);
             dragRect.style.visibility = Visibility.Visible;
-            dragRect.style.top = initialMousePosition.y;
-            dragRect.style.left = initialMousePosition.x;
-            dragRect.style.bottom = initialMousePosition.y;
-            dragRect.style.right = initialMousePosition.x;
-            dragRect.style.width = 0;
-            dragRect.style.height = 0;
+            dragRect.SetPosition(new Rect(initialMousePosition, Vector2.zero));
             m_IsDraggingSelection = true;
+
             evt.StopPropagation();
         }
     }
@@ -59,37 +58,20 @@ public class NodeSelectionDragger : SelectionDragger
     {
         if (m_IsDraggingSelection)
         {
-            // Update the selection rectangle
-            if(initialMousePosition.y > evt.localMousePosition.y)
-            {
-                dragRect.style.top = evt.localMousePosition.y;
-                dragRect.style.bottom = initialMousePosition.y;
-                m_SelectionRect.yMin = evt.localMousePosition.y;
-                m_SelectionRect.yMax = initialMousePosition.y;
-            }
-            else
-            {
-                dragRect.style.top = initialMousePosition.y;
-                dragRect.style.bottom = evt.localMousePosition.y;
-                m_SelectionRect.yMin = initialMousePosition.y;
-                m_SelectionRect.yMax = evt.localMousePosition.y;
-            }
-            if (initialMousePosition.x > evt.localMousePosition.x)
-            {
-                dragRect.style.left = evt.localMousePosition.x;
-                dragRect.style.right = initialMousePosition.x;
-                m_SelectionRect.xMin = evt.localMousePosition.x;
-                m_SelectionRect.xMax = initialMousePosition.x;
-            }
-            else
-            {
-                dragRect.style.left = initialMousePosition.x;
-                dragRect.style.right = evt.localMousePosition.x;
-                m_SelectionRect.xMin = initialMousePosition.x;
-                m_SelectionRect.xMax = evt.localMousePosition.x;
-            }
-            dragRect.style.width = dragRect.style.right.value.value - dragRect.style.left.value.value;
-            dragRect.style.height = dragRect.style.bottom.value.value - dragRect.style.top.value.value;
+            //Get the mouse position relative to the pan/zoom of the graphview
+            Vector2 translatedPos = graphView.contentViewContainer.WorldToLocal(evt.mousePosition);
+
+            //Calculate new rectangle size and positon
+            float x1 = Mathf.Min(initialMousePosition.x, translatedPos.x);
+            float y1 = Mathf.Min(initialMousePosition.y, translatedPos.y);
+            float x2 = Mathf.Max(initialMousePosition.x, translatedPos.x);
+            float y2 = Mathf.Max(initialMousePosition.y, translatedPos.y);
+            float width = Mathf.Abs(x2 - x1);
+            float height = Mathf.Abs(y2 - y1);
+
+            //Redraw the rectangle
+            m_SelectionRect = new Rect(x1, y1, width, height);
+            dragRect.SetPosition(m_SelectionRect);
 
             // Mark the graph view as dirty to repaint the selection rect
             ((DialogTreeGraphView)this.target).MarkDirtyRepaint();
@@ -100,9 +82,7 @@ public class NodeSelectionDragger : SelectionDragger
     {
         if (m_IsDraggingSelection)
         {
-            dragRect.style.visibility = Visibility.Hidden;
             // Perform selection of nodes within the selection rectangle
-            List<GraphElement> selectedNodes = new List<GraphElement>();
             foreach (var elem in ((DialogTreeGraphView)this.target).graphElements.ToList())
             {
                 if (elem is Node node && m_SelectionRect.Overlaps(node.GetPosition()))
@@ -112,6 +92,7 @@ public class NodeSelectionDragger : SelectionDragger
             }
 
             // Stop selection dragging
+            dragRect.style.visibility = Visibility.Hidden;
             m_IsDraggingSelection = false;
             evt.StopPropagation();
         }

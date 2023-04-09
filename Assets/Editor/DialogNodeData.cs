@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -13,6 +11,16 @@ public class DialogNodeData : NodeData
     }
     [SerializeField]
     private string dialog;
+
+    [SerializeField]
+    private Color borderColor;
+    [SerializeField]
+    private Color borderImage;
+    [SerializeField]
+    private Sprite backGroundColor;
+    [SerializeField]
+    private Sprite backGroundImage;
+
     [SerializeReference]
     public SerializeableMap outputPortsConnectionsMap;
 

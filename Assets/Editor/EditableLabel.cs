@@ -36,6 +36,17 @@ public class EditableLabel : Label
         if (textField != null)
         {
             string newName = textField.value;
+
+            //If the editable label is a node title, dont check uniqueness
+            if (parent.name == "title")
+            {
+                text = newName;
+                Remove(textField);
+                AddToClassList("editable-label");
+                textField = null;
+                return;
+            }
+            
             //Dialog and Boolean nodes handle output name uniqueness differently
             //so we switch depending on the parent type and ensure the new text of the string obeys uniqueness rules
             DialogTreeNode parentNode = GetFirstAncestorOfType<DialogTreeNode>();

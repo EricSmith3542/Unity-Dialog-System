@@ -1,14 +1,33 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public partial class DialogTreeGraphView : GraphView
 {
     public DialogTreeGraphView()
     {
-        // Add selection dragger to the view
-        var selectionDragger = new NodeSelectionDragger(this);
-        this.AddManipulator(selectionDragger);        
+        //TODO: This node selection dragger may be able to be replaced by some of the out of the box manipulators
+        this.AddManipulator(new NodeSelectionDragger(this));
+        //this.AddManipulator(new SelectionDragger());
+        //this.AddManipulator(new RectangleSelector());
+
+
+        //TODO: Zooming messes with the selection dragger
+        //Zoom - scroll
+        this.AddManipulator(new ContentZoomer());
+        //Pan - middle mouse
+        this.AddManipulator(new ContentDragger());
+
+
+        style.borderBottomWidth = 1;
+        style.borderLeftWidth = 1;
+        style.borderRightWidth = 1;
+        style.borderTopWidth = 1;
+        style.borderBottomColor = Color.white;
+        style.borderLeftColor = Color.white;
+        style.borderRightColor = Color.white;
+        style.borderTopColor = Color.white;
     }
 
     public List<Port> GetCompatiblePorts(Port startPort)
