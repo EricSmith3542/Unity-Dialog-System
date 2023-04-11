@@ -1,13 +1,31 @@
 using System;
+using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [Serializable]
 public class DialogNodeData : NodeData
 {
-    public DialogNodeData(string id, string title, Rect pos, SerializeableMap outputConnectionMap, string dialog) : base(id, title, pos)
+    public DialogNodeData(DialogNode node) : base(node.id, node.nodeTitle, node.GetPosition())
     {
-        outputPortsConnectionsMap = outputConnectionMap;
-        this.dialog = dialog;
+        dialog = node.Dialog;
+        borderColor = node.GetBorderColor();
+        borderImage = node.GetBorderSprite();
+        backGroundColor = node.GetBackgroundColor();
+        backGroundImage = node.GetBackgroundSprite();
+
+        SerializeableMap connections = new SerializeableMap();
+        foreach (Port outputPort in node.outputContainer.Query<Port>().ToList())
+        {
+            List<string> inputIds = new List<string>();
+            foreach (Edge edge in outputPort.connections)
+            {
+                inputIds.Add((edge.input.GetFirstAncestorOfType<DialogTreeNode>()).id);
+            }
+            connections.Add(EditableLabel.FetchEditableLabel(outputPort).text, inputIds);
+        }
+        outputPortsConnectionsMap = connections;
     }
     [SerializeField]
     private string dialog;
@@ -15,9 +33,10 @@ public class DialogNodeData : NodeData
     [SerializeField]
     private Color borderColor;
     [SerializeField]
-    private Color borderImage;
+    private Sprite borderImage;
+
     [SerializeField]
-    private Sprite backGroundColor;
+    private Color backGroundColor;
     [SerializeField]
     private Sprite backGroundImage;
 
@@ -29,13 +48,19 @@ public class DialogNodeData : NodeData
         DialogNode node = new DialogNode(title, gv, id, pos);
         node.Dialog = dialog;
 
-        //Remove the port
-        node.outputContainer.RemoveAt(2);
+        //Remove the starting port
+        node.RemoveOutputPort();
         outputPortsConnectionsMap.RecreateValuesListFromString();
         foreach (string outputPortName in outputPortsConnectionsMap.Keys)
         {
             node.AddOutputPort(outputPortName);
         }
+
+        node.SetBorderColor(borderColor);
+        node.SetBorderSprite(borderImage);
+        node.SetBackgroundColor(backGroundColor);
+        node.SetBackgroundSprite(backGroundImage);
+
         return node;
     }
 }

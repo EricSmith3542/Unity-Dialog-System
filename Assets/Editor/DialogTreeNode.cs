@@ -6,6 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//This class could use a better name
 public abstract class DialogTreeNode : Node
 {
     protected DialogTreeGraphView graphView;

@@ -11,7 +11,7 @@ public class DialogTree : ScriptableObject
     [SerializeField]
     public string characterId;
     [SerializeReference]
-    public DialogNodeData startNode;
+    public string startNodeId;
     [SerializeReference]
     public List<NodeData> nodes;
 }

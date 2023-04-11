@@ -57,7 +57,6 @@ public class SerializeableMap
     {
         if(valuesAsString != null && valuesAsString.Length > 0)
         {
-            Debug.Log("RECONSTRUCT FROM: " + valuesAsString);
             foreach (string keyAndValueString in valuesAsString.Split(","))
             {
                 string[] keyAndValue = keyAndValueString.Split(":");

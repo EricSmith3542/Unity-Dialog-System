@@ -36,7 +36,6 @@ public class BooleanNode : DialogTreeNode
 
     public override void AddOutputPort(string portName)
     {
-        Debug.Log(string.Join(" , ", conditionNames));
         if(portName == "")
         {
             AddOutputPort();

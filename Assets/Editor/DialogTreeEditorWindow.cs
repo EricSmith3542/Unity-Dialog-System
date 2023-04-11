@@ -95,7 +95,7 @@ public class DialogTreeEditorWindow : EditorWindow
 
         asset = CreateInstance<DialogTree>();
         asset.treeName = "New Dialog Tree";
-        asset.startNode = (DialogNodeData)node.AsData();
+        asset.startNodeId = node.id;
     }
 
     private static void OpenSavedGraph()

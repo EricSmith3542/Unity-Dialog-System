@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -30,18 +29,17 @@ public class DialogNode : DialogTreeNode
 
     public override NodeData AsData()
     {
-        SerializeableMap connections = new SerializeableMap();
-        foreach (Port outputPort in outputContainer.Query<Port>().ToList())
-        {
-            List<string> inputIds = new List<string>();
-            foreach (Edge edge in outputPort.connections)
-            {
-                inputIds.Add((edge.input.GetFirstAncestorOfType<DialogTreeNode>()).id);
-            }
-            connections.Add(EditableLabel.FetchEditableLabel(outputPort).text, inputIds);
-        }
-        return new DialogNodeData(id, nodeTitle, GetPosition(), connections, Dialog);
+        return new DialogNodeData(this);
     }
+
+    public Color GetBorderColor() { return borderColorField.value; }
+    public Color GetBackgroundColor() { return backGroundColorField.value; }
+    public Sprite GetBorderSprite() { return (Sprite)borderSpriteField.value; }
+    public Sprite GetBackgroundSprite() { return (Sprite)backGroundSpriteField.value; }
+    public void SetBorderColor(Color borderColor) { borderColorField.value = borderColor; }
+    public void SetBorderSprite(Sprite borderSprite) { borderSpriteField.value = borderSprite; }
+    public void SetBackgroundColor(Color backGroundColor) { backGroundColorField.value = backGroundColor; }
+    public void SetBackgroundSprite(Sprite backGroundSprite) { backGroundSpriteField.value = backGroundSprite; }
 
     //CONTEXT MENU EXAMPLE
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -130,7 +128,7 @@ public class DialogNode : DialogTreeNode
     }
 
     
-    private void RemoveOutputPort()
+    public void RemoveOutputPort()
     {
         VisualElement removePort = outputContainer.ElementAt(outputContainer.childCount - 1);
         outputNameSet.Remove(EditableLabel.FetchEditableLabel(removePort).text);
