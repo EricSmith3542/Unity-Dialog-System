@@ -43,9 +43,9 @@ public class DialogNodeData : NodeData
     [SerializeReference]
     public SerializeableMap outputPortsConnectionsMap;
 
-    public override DialogTreeNode AsNode(DialogTreeGraphView gv)
+    public override DialogTreeNode AsNode()
     {
-        DialogNode node = new DialogNode(title, gv, id, pos);
+        DialogNode node = new DialogNode(title, id, pos);
         node.Dialog = dialog;
 
         //Remove the starting port

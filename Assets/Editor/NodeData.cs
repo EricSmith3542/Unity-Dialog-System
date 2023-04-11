@@ -18,5 +18,5 @@ public abstract class NodeData
     [SerializeField]
     protected Rect pos;
 
-    public abstract DialogTreeNode AsNode(DialogTreeGraphView gv);
+    public abstract DialogTreeNode AsNode();
 }

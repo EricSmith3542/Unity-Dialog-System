@@ -18,9 +18,9 @@ public class BooleanNodeData : NodeData
         this.outputName = outputName;
     }
 
-    public override DialogTreeNode AsNode(DialogTreeGraphView gv)
+    public override DialogTreeNode AsNode()
     {
-        BooleanNode node = new BooleanNode(title, outputName, gv, id, pos);
+        BooleanNode node = new BooleanNode(title, outputName, id, pos);
         connectedNodeIds = new List<string>(connectedNodesAsString.Split(","));
         return node;
     }

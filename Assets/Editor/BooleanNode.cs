@@ -9,15 +9,15 @@ public class BooleanNode : DialogTreeNode
     private static HashSet<string> conditionNames = new HashSet<string>();
 
     //TODO: Refactor these constructors, should be able to dedupe some code by making AddOutputPort handle 
-    public BooleanNode(string title, string portName, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
+    public BooleanNode(string title, string portName, string id, Rect pos) : base(title, id, pos)
     {
         defaultPortPrefix = "Condition ";
         AddOutputPort(portName);
     }
-    public BooleanNode(string title, DialogTreeGraphView gv, string id, Rect pos) : this(title, "", gv, id, pos) { }
-    public BooleanNode(string title, string portName, DialogTreeGraphView gv, string id) : this(title, portName, gv, id, new Rect(0, 0, 0, 0)) { }
-    public BooleanNode(string title, DialogTreeGraphView gv, string id) : this(title, gv, id, new Rect(0, 0, 0, 0)) { }
-    public BooleanNode(DialogTreeGraphView gv, string id) : this("Start", gv, id) { }
+    public BooleanNode(string title, string id, Rect pos) : this(title, "", id, pos) { }
+    public BooleanNode(string title, string portName, string id) : this(title, portName, id, new Rect(0, 0, 0, 0)) { }
+    public BooleanNode(string title, string id) : this(title, id, new Rect(0, 0, 0, 0)) { }
+    public BooleanNode(string id) : this("Start", id) { }
 
     public override NodeData AsData()
     {

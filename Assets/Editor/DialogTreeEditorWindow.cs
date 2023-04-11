@@ -60,6 +60,8 @@ public class DialogTreeEditorWindow : EditorWindow
             graphView = new DialogTreeGraphView();
             graphView.style.width = new StyleLength(new Length(100f, LengthUnit.Percent));
             graphView.style.height = new StyleLength(new Length(100f, LengthUnit.Percent));
+            DialogTreeNode.SetGraphView(graphView);
+
             rootVisualElement.Add(graphView);
 
             //Reset node counts
@@ -87,7 +89,7 @@ public class DialogTreeEditorWindow : EditorWindow
     private static void OpenNewGraph()
     {
         //Create Starting Node
-        DialogNode node = new DialogNode(graphView, GetNextDialogNodeId());
+        DialogNode node = new DialogNode(GetNextDialogNodeId());
 
         //Add node to graph view
         graphView.AddElement(node);
@@ -150,7 +152,7 @@ public class DialogTreeEditorWindow : EditorWindow
         foreach (NodeData data in asset.nodes)
         {
             //Create and add node to the graph
-            DialogTreeNode node = data.AsNode(graphView);
+            DialogTreeNode node = data.AsNode();
             graphView.AddElement(node);
 
             //Increment approriate node count
@@ -201,11 +203,11 @@ public class DialogTreeEditorWindow : EditorWindow
         DialogNode another;
         if (isShortcut)
         {
-            another = new DialogNode("Dialog " + dialogNodesCreated, graphView, GetNextDialogNodeId(), new Rect(mousePos, Vector2.zero));
+            another = new DialogNode("Dialog " + dialogNodesCreated, GetNextDialogNodeId(), new Rect(mousePos, Vector2.zero));
         }
         else
         {
-            another = new DialogNode("Dialog " + dialogNodesCreated, graphView, GetNextDialogNodeId());
+            another = new DialogNode("Dialog " + dialogNodesCreated, GetNextDialogNodeId());
         }
 
         graphView.AddElement(another);
@@ -223,11 +225,11 @@ public class DialogTreeEditorWindow : EditorWindow
         string titleAndPort = "Condition " + booleanNodesCreated;
         if (isShortcut)
         {
-            another = new BooleanNode(titleAndPort, titleAndPort, graphView, GetNextBooleanNodeId(), new Rect(mousePos, Vector2.zero));
+            another = new BooleanNode(titleAndPort, titleAndPort, GetNextBooleanNodeId(), new Rect(mousePos, Vector2.zero));
         }
         else
         {
-            another = new BooleanNode(titleAndPort, titleAndPort, graphView, GetNextBooleanNodeId());
+            another = new BooleanNode(titleAndPort, titleAndPort, GetNextBooleanNodeId());
         }
 
         graphView.AddElement(another);
@@ -242,9 +244,6 @@ public class DialogTreeEditorWindow : EditorWindow
     private void OnGUI()
     {
         mousePos = Event.current.mousePosition;
-        //HandleZoom();
-        //MousePan();
-        //MouseWheelZoom();
     }
 
     private void HandleZoom()

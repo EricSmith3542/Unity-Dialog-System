@@ -9,17 +9,16 @@ using UnityEngine.UIElements;
 //This class could use a better name
 public abstract class DialogTreeNode : Node
 {
-    protected DialogTreeGraphView graphView;
+    protected static DialogTreeGraphView graphView;
     protected string defaultPortPrefix;
     protected int portCount;
     public string nodeTitle;
     public string id;
 
-    protected DialogTreeNode(string title, DialogTreeGraphView gv, string id, Rect pos)
+    protected DialogTreeNode(string title, string id, Rect pos)
     {
         this.id = id;
         nodeTitle = title;
-        graphView = gv;
         SetPosition(pos);
         SetNodeCapabilites();
 
@@ -50,6 +49,11 @@ public abstract class DialogTreeNode : Node
                                 Capabilities.Groupable |
                                 Capabilities.Stackable;
     }
+    public static void SetGraphView(DialogTreeGraphView gv)
+    {
+        graphView = gv;
+    }
+
     protected void AddOutputPort()
     {
         AddOutputPort(defaultPortPrefix + portCount++);

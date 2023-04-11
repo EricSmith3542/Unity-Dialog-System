@@ -112,7 +112,6 @@ public class SerializeableMap
                 result += ",";
             }
         }
-        Debug.Log(result);
         valuesAsString = result;
     }
 

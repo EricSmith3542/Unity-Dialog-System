@@ -14,7 +14,7 @@ public class DialogNode : DialogTreeNode
     private TextField dialogTextField, displayNameField;
     private HashSet<string> outputNameSet;
 
-    public DialogNode(string title, DialogTreeGraphView gv, string id, Rect pos) : base(title, gv, id, pos)
+    public DialogNode(string title, string id, Rect pos) : base(title, id, pos)
     {
         outputNameSet = new HashSet<string>();
         defaultPortPrefix = "Option ";
@@ -24,8 +24,8 @@ public class DialogNode : DialogTreeNode
         AddOutputPort();
         BuildTextArea();
     }
-    public DialogNode(string title, DialogTreeGraphView gv, string id) : this(title, gv, id, new Rect(0, 0, 0, 0)) { }
-    public DialogNode(DialogTreeGraphView gv, string id) : this("Start", gv, id) { }
+    public DialogNode(string title, string id) : this(title, id, new Rect(0, 0, 0, 0)) { }
+    public DialogNode(string id) : this("Start", id) { }
 
     public override NodeData AsData()
     {
