@@ -1,0 +1,256 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76253dc9940ee544f95450f29d400710, type: 3}
+  m_Name: Tester
+  m_EditorClassIdentifier: 
+  treeName: New Dialog Tree
+  characterId: 
+  startNodeId: dialog-0
+  nodes:
+  - rid: 8111096448147259467
+  - rid: 8111096448147259468
+  - rid: 8111096448147259469
+  - rid: 8111096448147259470
+  - rid: 8111096448147259471
+  - rid: 8111096448147259472
+  - rid: 8111096448147259473
+  - rid: 8111096448147259474
+  - rid: 8111096448147259475
+  references:
+    version: 2
+    RefIds:
+    - rid: 8111096448147259467
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-0
+        title: Start
+        position:
+          serializedVersion: 2
+          x: 56
+          y: 273
+          width: 479
+          height: 222
+        dialog: This is the first message
+        displayName: ???
+        borderColor: {r: 0.19917604, g: 0.990566, b: 0.023362402, a: 0}
+        borderImage: {fileID: 21300000, guid: 8325d4ef0a6eb3d43952aff8a06d9f45, type: 3}
+        backGroundColor: {r: 0.20000002, g: 0.9921569, b: 0.023529414, a: 0}
+        backGroundImage: {fileID: 21300000, guid: 36aa199be72cfd14d9164c4bf10f0d8d, type: 3}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259476
+    - rid: 8111096448147259468
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-2
+        title: Dialog 2
+        position:
+          serializedVersion: 2
+          x: 639
+          y: 609
+          width: 420
+          height: 275
+        dialog: 'What do you mean nope? Clearly that was the first message.
+
+
+          Unless........
+
+
+          There
+          is a bug!!! *GASP*'
+        displayName: ???
+        borderColor: {r: 0.9811321, g: 0.9484943, b: 0.0046279924, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0.9803922, g: 0.9490197, b: 0.003921569, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259477
+    - rid: 8111096448147259469
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-1
+        title: Dialog 1
+        position:
+          serializedVersion: 2
+          x: 645
+          y: 98
+          width: 415
+          height: 248
+        dialog: 'Pretty cool huh???
+
+
+          I think it''s pretty cool.'
+        displayName: ???
+        borderColor: {r: 0, g: 0.09019608, b: 1, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0, g: 0.09055519, b: 1, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259478
+    - rid: 8111096448147259470
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-3
+        title: Dialog 3
+        position:
+          serializedVersion: 2
+          x: 1181
+          y: -52
+          width: 373
+          height: 222
+        dialog: You got the pink ending. Yippeee!!!
+        displayName: ???
+        borderColor: {r: 1, g: 0, b: 0.94516706, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 1, g: 0, b: 0.9450981, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259479
+    - rid: 8111096448147259471
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-4
+        title: Dialog 4
+        position:
+          serializedVersion: 2
+          x: 1181
+          y: 170
+          width: 373
+          height: 248
+        dialog: 'O-oh....
+
+
+          Okay then. :('
+        displayName: ???
+        borderColor: {r: 0, g: 0, b: 0, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259480
+    - rid: 8111096448147259472
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-5
+        title: Dialog 5
+        position:
+          serializedVersion: 2
+          x: 1176
+          y: 659
+          width: 373
+          height: 222
+        dialog: Rippy, we hate bugs.
+        displayName: ???
+        borderColor: {r: 0.49987668, g: 0.039649326, b: 0.9339623, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0.49803925, g: 0.039215688, b: 0.9333334, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259481
+    - rid: 8111096448147259473
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-6
+        title: Dialog 6
+        position:
+          serializedVersion: 2
+          x: 1180
+          y: 900
+          width: 373
+          height: 248
+        dialog: 'Alright I guess you are just spamming nope for no reason.
+
+
+          Or
+          just to test I guess. *shrugs*'
+        displayName: ???
+        borderColor: {r: 0, g: 1, b: 0.8282523, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0, g: 1, b: 0.82745105, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259482
+    - rid: 8111096448147259474
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: BOOL
+        id: bool-0
+        title: Condition 0
+        position:
+          serializedVersion: 2
+          x: 766
+          y: 420
+          width: 121
+          height: 83
+        connectedNodesAsString: dialog-7
+        outputName: CanSayMaybe
+    - rid: 8111096448147259475
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-7
+        title: Dialog 7
+        position:
+          serializedVersion: 2
+          x: 1177
+          y: 408
+          width: 373
+          height: 248
+        dialog: 'You said maybe.....
+
+
+          Maybe'
+        displayName: ???
+        borderColor: {r: 1, g: 0, b: 0, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 1, g: 0, b: 0, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259483
+    - rid: 8111096448147259476
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: Yup:dialog-1,Nope:dialog-2
+    - rid: 8111096448147259477
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: Yup2?:dialog-5,Nope2?:dialog-6,Maybe:dialog-7
+    - rid: 8111096448147259478
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: Yup2:dialog-3,Nope:dialog-4,Maybe:dialog-7
+    - rid: 8111096448147259479
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: 
+    - rid: 8111096448147259480
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: 
+    - rid: 8111096448147259481
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: 
+    - rid: 8111096448147259482
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: 
+    - rid: 8111096448147259483
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: 

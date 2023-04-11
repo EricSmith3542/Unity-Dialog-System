@@ -114,10 +114,10 @@ public class DialogTreeEditorWindow : EditorWindow
             switch (data)
             {
                 case DialogNodeData dialogData:
-                    DialogNode dialogNode = graphView.Query<DialogNode>().Where(node => node.id == dialogData.id).First();
+                    DialogNode dialogNode = graphView.Query<DialogNode>().Where(node => node.id == dialogData.Id).First();
                     foreach (Port output in dialogNode.outputContainer.Query<Port>().ToList())
                     {
-                        List<string> connectedNodeIds = dialogData.outputPortsConnectionsMap.Get(EditableLabel.FetchEditableLabel(output).text);
+                        List<string> connectedNodeIds = dialogData.OutputPortsConnectionsMap.Get(EditableLabel.FetchEditableLabel(output).text);
                         if (connectedNodeIds != null)
                         {
                             foreach (string nodeId in connectedNodeIds)
@@ -130,8 +130,8 @@ public class DialogTreeEditorWindow : EditorWindow
                     }
                     break;
                 case BooleanNodeData boolData:
-                    Port boolNodePort = graphView.Query<Port>().Where(p => p.direction == Direction.Output && p.GetFirstAncestorOfType<BooleanNode>() != null && p.GetFirstAncestorOfType<BooleanNode>().id == boolData.id).First();
-                    foreach (string nodeId in boolData.connectedNodeIds)
+                    Port boolNodePort = graphView.Query<Port>().Where(p => p.direction == Direction.Output && p.GetFirstAncestorOfType<BooleanNode>() != null && p.GetFirstAncestorOfType<BooleanNode>().id == boolData.Id).First();
+                    foreach (string nodeId in boolData.ConnectedNodeIds)
                     {
                         Port input = graphView.Query<Port>().Where(p => p.direction == Direction.Input && p.GetFirstAncestorOfType<DialogNode>() != null && p.GetFirstAncestorOfType<DialogNode>().id == nodeId);
                         if(input != null)
@@ -152,7 +152,7 @@ public class DialogTreeEditorWindow : EditorWindow
         foreach (NodeData data in asset.nodes)
         {
             //Create and add node to the graph
-            DialogTreeNode node = data.AsNode();
+            DialogTreeNode node = BuildNodeFromData(data);
             graphView.AddElement(node);
 
             //Increment approriate node count
@@ -169,6 +169,48 @@ public class DialogTreeEditorWindow : EditorWindow
                     break;
             }
         }
+    }
+
+    private static DialogTreeNode BuildNodeFromData(NodeData data)
+    {
+        switch (data.NodeType)
+        {
+            case "DIALOG":
+                return BuildDialogNodeFromData((DialogNodeData)data);
+            case "BOOL":
+                return BuildBooleanNodeFromData((BooleanNodeData)data);
+            default:
+                Debug.Log("The node type \"" + data.NodeType + "\" does not have a corresponding builder method.");
+                return null;
+        }
+    }
+
+    private static DialogNode BuildDialogNodeFromData(DialogNodeData data)
+    {
+        DialogNode node = new DialogNode(data.Title, data.Id, data.Position);
+        node.Dialog = data.Dialog;
+
+        //Remove the starting port
+        node.RemoveOutputPort();
+        data.OutputPortsConnectionsMap.RecreateValuesListFromString();
+        foreach (string outputPortName in data.OutputPortsConnectionsMap.Keys)
+        {
+            node.AddOutputPort(outputPortName);
+        }
+
+        node.SetBorderColor(data.BorderColor);
+        node.SetBorderSprite(data.BorderImage);
+        node.SetBackgroundColor(data.BackGroundColor);
+        node.SetBackgroundSprite(data.BackGroundImage);
+
+        return node;
+    }
+
+    private static BooleanNode BuildBooleanNodeFromData(BooleanNodeData data)
+    {
+        BooleanNode node = new BooleanNode(data.Title, data.OutputName, data.Id, data.Position);
+        data.ConnectedNodeIds = new List<string>(data.ConnectedNodesAsString.Split(","));
+        return node;
     }
 
     private void AddUIButtons()
@@ -313,7 +355,7 @@ public class DialogTreeEditorWindow : EditorWindow
             NodeData data = element.AsData();
             if (data is DialogNodeData)
             {
-                ((DialogNodeData)data).outputPortsConnectionsMap.StoreAsString();
+                ((DialogNodeData)data).OutputPortsConnectionsMap.StoreAsString();
             }
             else if(data is BooleanNodeData) 
             {

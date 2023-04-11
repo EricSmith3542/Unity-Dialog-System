@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class BooleanNode : DialogTreeNode
 {
+    private const string TYPE_ID = "BOOL";
     private static HashSet<string> conditionNames = new HashSet<string>();
 
     //TODO: Refactor these constructors, should be able to dedupe some code by making AddOutputPort handle 
@@ -31,7 +32,7 @@ public class BooleanNode : DialogTreeNode
                 connectedNodeIds.Add(edge.input.GetFirstAncestorOfType<DialogNode>().id);
             }
         }
-        return new BooleanNodeData(id, nodeTitle, EditableLabel.FetchEditableLabel(output).text, GetPosition(), connectedNodeIds);
+        return new BooleanNodeData(TYPE_ID, id, nodeTitle, EditableLabel.FetchEditableLabel(output).text, GetPosition(), connectedNodeIds);
     }
 
     public override void AddOutputPort(string portName)

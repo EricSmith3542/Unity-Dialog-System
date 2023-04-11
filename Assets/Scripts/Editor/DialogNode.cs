@@ -6,13 +6,40 @@ using UnityEngine.UIElements;
 
 public class DialogNode : DialogTreeNode
 {
-    private string dialog = "";
-    public string Dialog { get => dialog; set => SetDialog(value); }
-
+    private const string TYPE_ID = "DIALOG";
     private ColorField borderColorField, backGroundColorField;
     private ObjectField borderSpriteField, backGroundSpriteField;
     private TextField dialogTextField, displayNameField;
     private HashSet<string> outputNameSet;
+    private string dialog = "";
+
+    public string Dialog { get => dialog; set => SetDialog(value); }
+    public string DisplayName 
+    { 
+        get => displayNameField.value; 
+        set => displayNameField.value = value;  
+    }
+    public Color BorderColor
+    {
+        get => borderColorField.value;
+        set => borderColorField.value = value;
+    }
+    public Color BackgroundColor
+    {
+        get => backGroundColorField.value;
+        set => backGroundColorField.value = value;
+    }
+    public Sprite BorderSprite
+    {
+        get => (Sprite)borderSpriteField.value;
+        set => borderSpriteField.value = value;
+    }
+    public Sprite BackgroundSprite
+    {
+        get => (Sprite)backGroundSpriteField.value;
+        set => backGroundSpriteField.value = value;
+    }
+    
 
     public DialogNode(string title, string id, Rect pos) : base(title, id, pos)
     {
@@ -29,7 +56,17 @@ public class DialogNode : DialogTreeNode
 
     public override NodeData AsData()
     {
-        return new DialogNodeData(this);
+        SerializeableMap connections = new SerializeableMap();
+        foreach (Port outputPort in outputContainer.Query<Port>().ToList())
+        {
+            List<string> inputIds = new List<string>();
+            foreach (Edge edge in outputPort.connections)
+            {
+                inputIds.Add((edge.input.GetFirstAncestorOfType<DialogTreeNode>()).id);
+            }
+            connections.Add(EditableLabel.FetchEditableLabel(outputPort).text, inputIds);
+        }
+        return new DialogNodeData(TYPE_ID, id, nodeTitle, GetPosition(), DisplayName, Dialog, BorderColor, BorderSprite, BackgroundColor, BackgroundSprite, connections);
     }
 
     public Color GetBorderColor() { return borderColorField.value; }

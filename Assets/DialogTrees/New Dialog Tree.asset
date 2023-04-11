@@ -14,231 +14,98 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treeName: New Dialog Tree
   characterId: 
-  startNodeId: 
+  startNodeId: dialog-0
   nodes:
-  - rid: 8111096448147259426
-  - rid: 8111096448147259427
-  - rid: 8111096448147259428
-  - rid: 8111096448147259429
-  - rid: 8111096448147259430
-  - rid: 8111096448147259431
-  - rid: 8111096448147259432
-  - rid: 8111096448147259433
-  - rid: 8111096448147259434
+  - rid: 8111096448147259460
+  - rid: 8111096448147259461
+  - rid: 8111096448147259462
+  - rid: 8111096448147259463
   references:
     version: 2
     RefIds:
-    - rid: 8111096448147259426
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
+    - rid: 8111096448147259460
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
       data:
-        id: dialog-2
-        title: Dialog 2
-        pos:
-          serializedVersion: 2
-          x: 485
-          y: 137
-          width: 415
-          height: 275
-        dialog: 'Cool.
-
-
-          If I just said "Cool", then this is working.
-
-
-          Is
-          it working?'
-        borderColor: {r: 0.9528302, g: 0.004494493, b: 0.004494493, a: 0}
-        borderImage: {fileID: 0}
-        backGroundColor: {r: 0.089045316, g: 0.9339623, b: 0, a: 0}
-        backGroundImage: {fileID: 0}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259435
-    - rid: 8111096448147259427
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-4
-        title: Dialog 4
-        pos:
-          serializedVersion: 2
-          x: 1052
-          y: -11
-          width: 373
-          height: 222
-        dialog: Sick.
-        borderColor: {r: 0, g: 0, b: 0, a: 0}
-        borderImage: {fileID: 0}
-        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
-        backGroundImage: {fileID: 0}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259436
-    - rid: 8111096448147259428
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-5
-        title: Dialog 5
-        pos:
-          serializedVersion: 2
-          x: 1051
-          y: 215
-          width: 526
-          height: 222
-        dialog: Is it actually not working? Or are you just saying that to test if
-          I would say this line of dialog???
-        borderColor: {r: 0, g: 0, b: 0, a: 0}
-        borderImage: {fileID: 0}
-        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
-        backGroundImage: {fileID: 0}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259437
-    - rid: 8111096448147259429
-      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: bool-2
-        title: Maybe?
-        pos:
-          serializedVersion: 2
-          x: 749
-          y: 444
-          width: 119
-          height: 83
-        connectedNodesAsString: dialog-6
-        outputName: canSayMaybe
-        connectedNodeIds:
-        - dialog-6
-    - rid: 8111096448147259430
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-6
-        title: Dialog 6
-        pos:
-          serializedVersion: 2
-          x: 1065
-          y: 442
-          width: 373
-          height: 222
-        dialog: ...It was a yes or no question dude.
-        borderColor: {r: 0, g: 0, b: 0, a: 0}
-        borderImage: {fileID: 0}
-        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
-        backGroundImage: {fileID: 0}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259438
-    - rid: 8111096448147259431
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-7
-        title: Dialog 7
-        pos:
-          serializedVersion: 2
-          x: 1059
-          y: 675
-          width: 373
-          height: 222
-        dialog: Deal with it.
-        borderColor: {r: 0, g: 0, b: 0, a: 0}
-        borderImage: {fileID: 0}
-        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
-        backGroundImage: {fileID: 0}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259439
-    - rid: 8111096448147259432
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-8
-        title: Dialog 8
-        pos:
-          serializedVersion: 2
-          x: 1060
-          y: 897
-          width: 373
-          height: 302
-        dialog: 'Alright good.
-
-
-          Well...I guess that''s really the whole
-          test then huh??
-
-
-          .   .   .   .   .
-
-
-          Okay bye I guess.
-          . .'
-        borderColor: {r: 0, g: 0, b: 0, a: 0}
-        borderImage: {fileID: 0}
-        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
-        backGroundImage: {fileID: 0}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259440
-    - rid: 8111096448147259433
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
+        nodeType: DIALOG
         id: dialog-0
         title: Start
-        pos:
+        position:
           serializedVersion: 2
-          x: -70
-          y: 353
-          width: 471
+          x: 221
+          y: 266
+          width: 424
           height: 222
-        dialog: Start testing?
-        borderColor: {r: 0.9528302, g: 0, b: 0, a: 0}
-        borderImage: {fileID: 21300000, guid: 36aa199be72cfd14d9164c4bf10f0d8d, type: 3}
-        backGroundColor: {r: 0.04004982, g: 0.9433962, b: 0.08735771, a: 0}
-        backGroundImage: {fileID: 21300000, guid: 0b000573453ce1340be93fe90a978a9e, type: 3}
-        outputPortsConnectionsMap:
-          rid: 8111096448147259441
-    - rid: 8111096448147259434
-      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        id: dialog-3
-        title: Dialog 3
-        pos:
-          serializedVersion: 2
-          x: 484
-          y: 581
-          width: 415
-          height: 248
-        dialog: 'Too bad, we are gonna test anyways.
-
-
-          You have a problem
-          with that?'
-        borderColor: {r: 0.9339623, g: 0.066082224, b: 0.066082224, a: 0}
+        dialog: 
+        displayName: ???
+        borderColor: {r: 0, g: 0, b: 0, a: 0}
         borderImage: {fileID: 0}
-        backGroundColor: {r: 0.013483422, g: 0.9528302, b: 0.029312529, a: 0}
+        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
         backGroundImage: {fileID: 0}
         outputPortsConnectionsMap:
-          rid: 8111096448147259442
-    - rid: 8111096448147259435
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+          rid: 8111096448147259464
+    - rid: 8111096448147259461
+      type: {class: BooleanNodeData, ns: , asm: Assembly-CSharp}
       data:
-        valuesAsString: Yes:dialog-4,No:dialog-5,Maybe:dialog-6
-    - rid: 8111096448147259436
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
+        nodeType: BOOL
+        id: bool-0
+        title: Condition 0
+        position:
+          serializedVersion: 2
+          x: 879
+          y: 579
+          width: 106
+          height: 83
+        connectedNodesAsString: dialog-2
+        outputName: Condition 0
+    - rid: 8111096448147259462
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-1
+        title: Dialog 1
+        position:
+          serializedVersion: 2
+          x: 781
+          y: 201
+          width: 424
+          height: 242
+        dialog: 
+        displayName: ???
+        borderColor: {r: 0, g: 0, b: 0, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259465
+    - rid: 8111096448147259463
+      type: {class: DialogNodeData, ns: , asm: Assembly-CSharp}
+      data:
+        nodeType: DIALOG
+        id: dialog-2
+        title: Dialog 2
+        position:
+          serializedVersion: 2
+          x: 1120
+          y: 495
+          width: 373
+          height: 222
+        dialog: 
+        displayName: ???
+        borderColor: {r: 0, g: 0, b: 0, a: 0}
+        borderImage: {fileID: 0}
+        backGroundColor: {r: 0, g: 0, b: 0, a: 0}
+        backGroundImage: {fileID: 0}
+        outputPortsConnectionsMap:
+          rid: 8111096448147259466
+    - rid: 8111096448147259464
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: Option 0:dialog-1
+    - rid: 8111096448147259465
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
+      data:
+        valuesAsString: Option 0:NONE,Option 1:NONE,Option 2:NONE,Option 3:dialog-2
+    - rid: 8111096448147259466
+      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp}
       data:
         valuesAsString: 
-    - rid: 8111096448147259437
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: 
-    - rid: 8111096448147259438
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: 
-    - rid: 8111096448147259439
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: 
-    - rid: 8111096448147259440
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: 
-    - rid: 8111096448147259441
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: Yes:dialog-2,No:dialog-3
-    - rid: 8111096448147259442
-      type: {class: SerializeableMap, ns: , asm: Assembly-CSharp-Editor}
-      data:
-        valuesAsString: Yes:dialog-7,No:dialog-8,Maybe:dialog-6

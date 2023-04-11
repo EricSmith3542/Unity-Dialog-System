@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DialogPresenter : MonoBehaviour
 {
-    //[SerializeField]
-    //public DialogTree dialogTree;
+    [SerializeField]
+    public DialogTree dialogTree;
     // Start is called before the first frame update
     void Start()
     {
